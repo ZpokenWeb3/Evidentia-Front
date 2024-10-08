@@ -7,7 +7,7 @@ import {
 } from 'thirdweb/react'
 import { useEffect, useState } from 'react'
 import { addresses } from '../../../config/addresses'
-import { getContract, prepareContractCall, readContract } from 'thirdweb'
+import { getContract, prepareContractCall } from 'thirdweb'
 import { thirdwebClient } from '../../../config/thirdweb'
 import { cutString, hashString } from '../../../lib/string'
 import {
@@ -22,7 +22,6 @@ import { ChartCandlestick, Coins, Hash } from 'lucide-react'
 import { InputIcon } from '../../../components/input-icon'
 import { Button } from '../../../components/ui/button'
 import { UserBond } from '@/app/types/bonds'
-import { getStakingAndBorrowingContract } from '@/app/lib/contracts'
 
 interface UnstakeNftModalProps {
 	bond: UserBond
@@ -41,19 +40,7 @@ export const UnstakeNftModal = ({ bond }: UnstakeNftModalProps) => {
 	useEffect(() => {
 		if (!account || !chain) return
 
-		void (async () => {
-			console.log(
-				await readContract({
-					contract: getStakingAndBorrowingContract(chain),
-					method: 'userNFTs',
-					params: [
-						account.address,
-						addresses[chain.id]!.BOND_NFT,
-						BigInt(hashString(bond.ISIN)),
-					],
-				})
-			)
-		})()
+		void (async () => {})()
 	}, [account, chain])
 
 	const stake = async () => {

@@ -41,7 +41,7 @@ interface MintModalProps {
 
 export const MintModal = ({ bond }: MintModalProps) => {
 	const [open, setOpen] = useState<boolean>(false)
-	const [gas, setGas] = useState<string>('')
+	const [gas, setGas] = useState('')
 	const chain = useActiveWalletChain()
 	const account = useActiveAccount()
 	const { mutateAsync } = useSendTransaction()
@@ -165,7 +165,7 @@ export const MintModal = ({ bond }: MintModalProps) => {
 								<Newspaper className='w-5 stroke-2 text-input-icon' />
 							</div>
 							<p className='break-all text-base font-medium text-[#161822]'>
-								{gas} ETH
+								{gas} XRP
 							</p>
 						</div>
 					</div>
