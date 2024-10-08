@@ -36,7 +36,7 @@ export default function Landing() {
 				</div>
 				<div>
 					<Image
-						src='/slide2.png'
+						src='/slide2.webp'
 						alt='slide'
 						width={476}
 						height={242}

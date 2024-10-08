@@ -91,7 +91,7 @@ export const Step2 = ({ mint }: { mint: () => Promise<void> }) => {
 				)}
 			</div>
 			<div className='flex justify-end'>
-				<Image src='/contract.png' width={524} height={642} alt='Contract' />
+				<Image src='/contract.webp' width={524} height={642} alt='Contract' />
 			</div>
 		</div>
 	)

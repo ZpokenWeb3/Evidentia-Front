@@ -4,7 +4,7 @@ import { links } from '../constants'
 
 export default function Landing() {
 	return (
-		<div className="h-screen w-screen bg-[url('/slide4.png')] bg-cover bg-center pt-[22px] px-[80px]">
+		<div className="h-screen w-screen bg-[url('/slide4.webp')] bg-cover bg-center pt-[22px] px-[80px]">
 			<div className='flex gap-8'>
 				{links.map(i => (
 					<p key={i} className='text-base font-semibold'>

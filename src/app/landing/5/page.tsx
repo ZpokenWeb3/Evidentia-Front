@@ -14,7 +14,7 @@ export default function Landing() {
 				))}
 			</div>
 			<div className='flex items-center flex-col'>
-				<Image src='/slide5.png' alt='slide5' width={1301} height={736} />
+				<Image src='/slide5.webp' alt='slide5' width={1301} height={736} />
 				<div className='flex self-end items-center gap-5'>
 					<p className='text-xl font-bold'>LET’S GO</p>
 					<ButtonArrow href={PagePath.KYC} />

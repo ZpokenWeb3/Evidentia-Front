@@ -11,7 +11,7 @@ export default function Landing() {
 	console.log(step)
 
 	return (
-		<div className="h-screen w-screen bg-[url('/slide3.png')] bg-cover bg-center pt-[22px] px-[80px]">
+		<div className="h-screen w-screen bg-[url('/slide3.webp')] bg-cover bg-center pt-[22px] px-[80px]">
 			<div className='flex gap-8'>
 				{links.map(i => (
 					<p key={i} className='text-base font-semibold text-[#161822]'>
