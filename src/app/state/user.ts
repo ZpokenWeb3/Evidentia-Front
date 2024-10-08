@@ -7,6 +7,9 @@ import {
 } from '../lib/contracts'
 import { BondStatus, UserBond } from '../types/bonds'
 import { addresses } from '../config/addresses'
+import { UserStats } from '../types/user'
+
+const ZERO_BIG_INT = BigInt(0)
 
 const getStatus = (
 	allowedToMints: bigint,
@@ -27,11 +30,20 @@ const getStatus = (
 export interface UserSlice {
 	userBonds: UserBond[]
 	fetchData: (account: string, chain: Chain) => Promise<void>
+	userStats: UserStats
+	fetchUserStats: (account: string, chain: Chain) => Promise<void>
 }
 
 export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 	return {
 		userBonds: [],
+		userStats: {
+			borrowed: ZERO_BIG_INT,
+			debt: ZERO_BIG_INT,
+			debtUpdateTimestamp: ZERO_BIG_INT,
+			nominalAvailable: ZERO_BIG_INT,
+			staked: ZERO_BIG_INT,
+		},
 		fetchData: async (account, chain) => {
 			const allowedBonds = await Promise.all(
 				allBonds.map(async i => {
@@ -66,8 +78,6 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 						params: [account, BigInt(i.tokenId)],
 					})
 
-					console.log(minted)
-
 					return {
 						...i,
 						allowedToMints,
@@ -83,6 +93,20 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 
 			set(state => {
 				state.user.userBonds = filtered
+			})
+		},
+
+		fetchUserStats: async (account, chain) => {
+			const stakingAndBorrowingContract = getStakingAndBorrowingContract(chain)
+
+			const userStats = await readContract({
+				contract: stakingAndBorrowingContract,
+				method: 'getUserStats',
+				params: [account],
+			})
+
+			set(state => {
+				state.user.userStats = userStats
 			})
 		},
 	}
