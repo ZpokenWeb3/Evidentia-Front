@@ -150,11 +150,15 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 				params: [account],
 			})
 
-			const expectedAPY = await readContract({
-				contract: stableCoinsStakingContract,
-				method: 'expectedAPY',
-				params: [account],
-			})
+			let expectedAPY = ZERO_BIG_INT
+
+			try {
+				expectedAPY = await readContract({
+					contract: stableCoinsStakingContract,
+					method: 'expectedAPY',
+					params: [account],
+				})
+			} catch (error) {}
 
 			const userStake = {
 				stakedAmount: stakers[0],
