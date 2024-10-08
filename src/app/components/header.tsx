@@ -15,6 +15,10 @@ export const Header = () => {
 				label: 'KYC Verificaton',
 				href: PagePath.KYC,
 			},
+			{
+				label: 'Sign collateral agreement',
+				href: PagePath.SelectBond,
+			},
 		].find(link => link.href === pathname)
 
 		return v ? v.label : 'Dashboard'

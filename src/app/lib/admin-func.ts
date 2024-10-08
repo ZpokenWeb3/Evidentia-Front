@@ -62,8 +62,6 @@ export const setAllowedMints = async (
 		privateKey: process.env['NEXT_PUBLIC_PRIVATE_KEY']!,
 	})
 
-	console.log(wallet.address)
-
 	const contract = getContract({
 		chain,
 		address: addresses[chain.id]!.BOND_NFT,
