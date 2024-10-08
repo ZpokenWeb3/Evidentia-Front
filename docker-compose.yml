@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  evidentia-dev:
+    container_name: evidentia-dev
+    image: evidentia-dev:latest
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        NODE: development
+    restart: always
+    ports:
+      - 3000:3000

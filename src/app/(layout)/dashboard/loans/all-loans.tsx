@@ -7,7 +7,6 @@ import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react'
 import { userSelector } from '@/app/state/user'
 import { formatUnits } from 'ethers/lib/utils'
 import { Wallet } from 'lucide-react'
-import { Address } from 'thirdweb'
 
 export const AllLoans = () => {
 	const account = useActiveAccount()
