@@ -5,7 +5,7 @@ export const SBC: ERC20 = {
 	symbol: 'SBC',
 	decimals: 6,
 	address: {
-		1440002: '0x9AC0a1F7AF0a9f17e39564Fa064AE95F02a77e17',
+		1440002: '0x791E5F801C2c3BA0B93Ad123b71Ee4c9b7d1b45F',
 	},
 }
 
