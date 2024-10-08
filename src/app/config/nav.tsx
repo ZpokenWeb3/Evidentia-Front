@@ -14,6 +14,7 @@ export enum PagePath {
 	Loans = '/dashboard/loans',
 	Staking = '/dashboard/staking',
 	KYC = '/kyc',
+	SelectBond = '/select-bond',
 }
 
 export const navLinks: NavLink[] = [

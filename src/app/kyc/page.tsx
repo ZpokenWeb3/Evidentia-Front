@@ -27,7 +27,7 @@ export default function KYC() {
 						onSubmit={e => {
 							e.preventDefault()
 							localStorage.setItem('KYC', 'true')
-							router.push(PagePath.Dashboard)
+							router.push(PagePath.SelectBond)
 						}}
 						className='flex flex-col gap-10 w-full'
 					>
@@ -45,7 +45,6 @@ export default function KYC() {
 								}
 								placeholder='Enter your last name'
 							/>
-
 							<SelectIcon
 								label='Type of ID'
 								selectValue={{ placeholder: 'Select a type' }}
