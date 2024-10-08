@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { manrope } from './config/font'
 import { Provider } from './provider'
-import { Header } from './components/header'
-import { Sidebar } from './components/sidebar'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -18,15 +16,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={`antialiased ${manrope.variable} font-sans`}>
-				<Provider>
-					<div className='flex h-screen'>
-						<Sidebar />
-						<div className='flex grow flex-col'>
-							<Header />
-							<div className='grow overflow-y-auto px-5 pt-4'>{children}</div>
-						</div>
-					</div>
-				</Provider>
+				<Provider>{children}</Provider>
 			</body>
 		</html>
 	)

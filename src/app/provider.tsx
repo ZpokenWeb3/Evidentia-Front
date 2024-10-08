@@ -47,6 +47,8 @@ export const Provider = ({
 
 	useEffect(() => {
 		const KYC = localStorage.getItem('KYC')
+		if (pathname.includes(PagePath.Landing)) return
+
 		if (pathname === PagePath.KYC) {
 			if (KYC) {
 				redirect(PagePath.Dashboard)

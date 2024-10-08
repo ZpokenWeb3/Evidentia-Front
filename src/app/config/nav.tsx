@@ -15,6 +15,11 @@ export enum PagePath {
 	Staking = '/dashboard/staking',
 	KYC = '/kyc',
 	SelectBond = '/select-bond',
+	Landing = '/landing',
+	Landing2 = '/landing/2',
+	Landing3 = '/landing/3',
+	Landing4 = '/landing/4',
+	Landing5 = '/landing/5',
 }
 
 export const navLinks: NavLink[] = [
