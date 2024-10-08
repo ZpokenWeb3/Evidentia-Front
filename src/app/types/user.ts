@@ -12,4 +12,5 @@ export interface UserStake {
 	userRewardPerTokenPaid: bigint
 	rewardsEarned: bigint
 	stakeTimestamp: bigint
+	expectedAPY: bigint
 }

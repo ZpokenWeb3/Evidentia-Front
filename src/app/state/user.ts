@@ -65,6 +65,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 			userRewardPerTokenPaid: ZERO_BIG_INT,
 			rewardsEarned: ZERO_BIG_INT,
 			stakeTimestamp: ZERO_BIG_INT,
+			expectedAPY: ZERO_BIG_INT,
 		},
 		fetchData: async (account, chain) => {
 			const allowedBonds = await Promise.all(
@@ -139,12 +140,19 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 				params: [account],
 			})
 
+			const expectedAPY = await readContract({
+				contract: stableCoinsStakingContract,
+				method: 'expectedAPY',
+				params: [account],
+			})
+
 			const userStake = {
 				stakedAmount: stakers[0],
 				rewardPaid: stakers[1],
 				userRewardPerTokenPaid: stakers[2],
 				rewardsEarned: stakers[3],
 				stakeTimestamp: stakers[4],
+				expectedAPY,
 			}
 
 			set(state => {

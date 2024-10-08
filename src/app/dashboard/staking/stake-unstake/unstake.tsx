@@ -16,7 +16,7 @@ import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb'
 import { thirdwebClient } from '@/app/config/thirdweb'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 
-export const Stake = () => {
+export const Unstake = () => {
 	const chain = useActiveWalletChain()
 	const account = useActiveAccount()
 	const { mutateAsync } = useSendTransaction()
@@ -25,37 +25,13 @@ export const Stake = () => {
 		useStore(userSelector)
 	const [amount, setAmount] = useState('')
 
-	const stake = async () => {
+	const unstake = async () => {
 		if (!account || !chain) return
 		try {
 			const contracts = addresses[chain.id]
 
-			const { STABLE_COINS_STAKING, STABLE_BOND_COINS } = contracts
-			const value = parseUnits(amount, mainERC20.decimals).toBigInt()
+			const { STABLE_COINS_STAKING } = contracts
 
-			// Approve ERC20 for STABLE_COINS_STAKING contract
-
-			const nftContract = getContract({
-				chain: chain,
-				address: STABLE_BOND_COINS,
-				client: thirdwebClient,
-			})
-
-			const approveTx = prepareContractCall({
-				contract: nftContract,
-				method: 'function approve(address spender, uint256 value)',
-				params: [STABLE_COINS_STAKING, value],
-			})
-
-			const { transactionHash: approveHash } = await mutateAsync(approveTx)
-
-			await waitForReceipt({
-				client: thirdwebClient,
-				chain,
-				transactionHash: approveHash,
-			})
-
-			// Stake
 			const contract = getContract({
 				chain: chain,
 				address: STABLE_COINS_STAKING,
@@ -64,8 +40,8 @@ export const Stake = () => {
 
 			const tx = prepareContractCall({
 				contract,
-				method: 'function stake(uint256 amount)',
-				params: [value],
+				method: 'function withdraw(uint256 amount)',
+				params: [parseUnits(amount, mainERC20.decimals).toBigInt()],
 			})
 
 			const { transactionHash } = await mutateAsync(tx)
@@ -89,32 +65,32 @@ export const Stake = () => {
 				className='flex flex-col gap-[18px]'
 				onSubmit={e => {
 					e.preventDefault()
-					void stake()
+					void unstake()
 				}}
 			>
 				<InputIcon
 					icon={<Coins className='size-5 stroke-2 text-input-icon' />}
-					label='Amount of Staking'
+					label='Amount of Unstaking'
 					placeholder='Enter amount'
 					value={amount}
 					onChange={e => setAmount(e.target.value)}
 				/>
-				<Button>Stake</Button>
+				<Button>Unstake</Button>
 			</form>
 			<div className='flex flex-col gap-[6px]'>
-				<div className='flex justify-between items-center'>
-					<p className='text-[12px] leading-[18px] font-normal'>Your Balance</p>
-					<p className='text-[12px] leading-[18px] font-normal'>
-						{formatUnits(mainERC20.balance, mainERC20.decimals)}
-						{mainERC20.symbol}
-					</p>
-				</div>
 				<div className='flex justify-between items-center'>
 					<p className='text-[12px] leading-[18px] font-normal'>
 						Your Staked Balance
 					</p>
 					<p className='text-[12px] leading-[18px] font-normal'>
 						{formatUnits(userStake.stakedAmount, mainERC20.decimals)}
+						{mainERC20.symbol}
+					</p>
+				</div>
+				<div className='flex justify-between items-center'>
+					<p className='text-[12px] leading-[18px] font-normal'>Your Balance</p>
+					<p className='text-[12px] leading-[18px] font-normal'>
+						{formatUnits(mainERC20.balance, mainERC20.decimals)}
 						{mainERC20.symbol}
 					</p>
 				</div>

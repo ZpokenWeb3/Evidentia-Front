@@ -5,6 +5,7 @@ import {
 	TabsTrigger,
 } from '@/app/components/ui/tabs'
 import { Stake } from './stake'
+import { Unstake } from './unstake'
 
 export const StakeUnstake = () => {
 	return (
@@ -19,7 +20,9 @@ export const StakeUnstake = () => {
 					<TabsContent value='stake'>
 						<Stake />
 					</TabsContent>
-					<TabsContent value='unstake'>Change your password here.</TabsContent>
+					<TabsContent value='unstake'>
+						<Unstake />
+					</TabsContent>
 				</Tabs>
 			</div>
 		</div>
