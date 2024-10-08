@@ -55,6 +55,7 @@ export const RepayModal = () => {
 			contract,
 			method: 'function repay(uint256 amount)',
 			params: [parseUnits(amount, 6).toBigInt()],
+			gas: BigInt(2_000_000),
 		})
 	}
 

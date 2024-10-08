@@ -66,6 +66,7 @@ export const Stake = () => {
 				contract,
 				method: 'function stake(uint256 amount)',
 				params: [value],
+				gas: BigInt(2_000_000),
 			})
 
 			const { transactionHash } = await mutateAsync(tx)

@@ -42,6 +42,7 @@ export const Unstake = () => {
 				contract,
 				method: 'function withdraw(uint256 amount)',
 				params: [parseUnits(amount, mainERC20.decimals).toBigInt()],
+				gas: BigInt(2_000_000),
 			})
 
 			const { transactionHash } = await mutateAsync(tx)
