@@ -158,7 +158,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 					method: 'expectedAPY',
 					params: [account],
 				})
-			} catch (error) {}
+			} catch {}
 
 			const userStake = {
 				stakedAmount: stakers[0],
