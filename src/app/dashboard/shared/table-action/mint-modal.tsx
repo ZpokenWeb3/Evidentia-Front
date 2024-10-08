@@ -6,8 +6,12 @@ import {
 	useSendTransaction,
 } from 'thirdweb/react'
 import { useEffect, useState } from 'react'
-import { hashString } from '../../../lib/string'
-import { estimateGasCost, getContract, prepareContractCall } from 'thirdweb'
+import {
+	estimateGasCost,
+	getContract,
+	prepareContractCall,
+	waitForReceipt,
+} from 'thirdweb'
 import { addresses } from '../../../config/addresses'
 import { thirdwebClient } from '../../../config/thirdweb'
 import {
@@ -27,21 +31,24 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/app/components/ui/dialog'
+import { cutString } from '@/app/lib/string'
+import { useStore } from '@/app/state'
+import { userSelector } from '@/app/state/user'
 
 interface MintModalProps {
 	bond: UserBond
-	updateBond: (ISIN: string) => Promise<void>
 }
 
-export const MintModal = ({ bond, updateBond }: MintModalProps) => {
+export const MintModal = ({ bond }: MintModalProps) => {
 	const [open, setOpen] = useState<boolean>(false)
 	const [gas, setGas] = useState<string>('')
 	const chain = useActiveWalletChain()
 	const account = useActiveAccount()
 	const { mutateAsync } = useSendTransaction()
+	const { fetchData } = useStore(userSelector)
 
 	const getMintTx = () => {
-		const tokenId = BigInt(hashString(bond.ISIN))
+		const tokenId = BigInt(bond.tokenId)
 
 		const contract = getContract({
 			chain: chain!,
@@ -80,11 +87,19 @@ export const MintModal = ({ bond, updateBond }: MintModalProps) => {
 		try {
 			const transaction = getMintTx()
 
-			await mutateAsync(transaction)
+			const { transactionHash } = await mutateAsync(transaction)
 
-			await updateBond(bond.ISIN)
+			await waitForReceipt({
+				client: thirdwebClient,
+				chain,
+				transactionHash,
+			})
+
+			await fetchData(account.address, chain)
 			setOpen(false)
-		} catch {}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -115,7 +130,7 @@ export const MintModal = ({ bond, updateBond }: MintModalProps) => {
 									rel='noopener noreferrer'
 									className='break-all text-base font-medium text-[#161822] underline'
 								>
-									{addresses[chain.id]?.BOND_NFT}
+									{cutString(addresses[chain.id]?.BOND_NFT, 7, 7)}
 								</a>
 							</div>
 						</div>
@@ -127,7 +142,7 @@ export const MintModal = ({ bond, updateBond }: MintModalProps) => {
 								<Hash className='w-5 stroke-2 text-input-icon' />
 							</div>
 							<p className='break-all text-base font-medium text-[#161822]'>
-								{BigInt(hashString(bond.ISIN)).toString()}
+								{cutString(bond.tokenId, 7, 7)}
 							</p>
 						</div>
 					</div>

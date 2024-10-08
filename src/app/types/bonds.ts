@@ -17,9 +17,10 @@ export interface Bond {
 	tokenId: string
 }
 
-export interface UserBond {
+export interface UserBond extends Bond {
+	allowedToMints: bigint
 	availableToMint: bigint
+	staked: bigint
+	minted: bigint
 	status: BondStatus
-	ISIN: string
-	stakedNft: bigint
 }

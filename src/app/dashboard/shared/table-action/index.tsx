@@ -14,10 +14,9 @@ import {
 
 interface TableActionProps {
 	bond: UserBond
-	updateBond: (ISIN: string) => Promise<void>
 }
 
-export const TableAction = ({ bond, updateBond }: TableActionProps) => {
+export const TableAction = ({ bond }: TableActionProps) => {
 	const [open, setOpen] = useState<boolean>(false)
 
 	if (
@@ -32,9 +31,7 @@ export const TableAction = ({ bond, updateBond }: TableActionProps) => {
 				<Ellipsis className='size-3 cursor-pointer' />
 			</PopoverTrigger>
 			<PopoverContent className='w-[190px]'>
-				{bond.status === BondStatus.READY_FOR_MINT && (
-					<MintModal bond={bond} updateBond={updateBond} />
-				)}
+				{bond.status === BondStatus.READY_FOR_MINT && <MintModal bond={bond} />}
 				{bond.status === BondStatus.MINTED && <StakeNftModal bond={bond} />}
 				{bond.status === BondStatus.UNDER_COLLATERAL && (
 					<UnstakeNftModal bond={bond} />
