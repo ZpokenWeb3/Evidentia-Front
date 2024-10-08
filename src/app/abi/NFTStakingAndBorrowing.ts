@@ -1,904 +1,868 @@
 export const NFTStakingAndBorrowingAbi = [
 	{
-		type: 'constructor',
 		inputs: [
 			{
+				internalType: 'address',
 				name: '_stableToken',
 				type: 'address',
-				internalType: 'address',
 			},
 		],
 		stateMutability: 'nonpayable',
+		type: 'constructor',
 	},
 	{
-		type: 'function',
-		name: 'LIQUIDATION_TIME_WINDOW',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'PROTOCOL_YIELD',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'RewardsTransfered',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'SAFETY_FEE',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'STABLES_STAKING_ADDRESS',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'borrow',
 		inputs: [
 			{
-				name: 'amount',
-				type: 'uint256',
 				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'calculateMaxBorrow',
-		inputs: [
-			{
-				name: 'totalAmount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'fromTime',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'toTime',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [
-			{
 				name: '',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'getRewardAmount',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'getRewards',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'getTotalStats',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'tuple',
-				internalType: 'struct NFTStakingAndBorrowing.TotalStats',
-				components: [
-					{
-						name: 'staked',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'borrowed',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'debt',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'debtUpdateTimestamp',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-				],
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'getUserStats',
-		inputs: [
-			{
-				name: 'userAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'tuple',
-				internalType: 'struct NFTStakingAndBorrowing.UserStats',
-				components: [
-					{
-						name: 'staked',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'nominalAvailable',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'borrowed',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'debt',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-					{
-						name: 'debtUpdateTimestamp',
-						type: 'uint256',
-						internalType: 'uint256',
-					},
-				],
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'liquidate',
-		inputs: [
-			{
-				name: 'nftAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'positionOwner',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'onERC1155BatchReceived',
-		inputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: '',
-				type: 'uint256[]',
-				internalType: 'uint256[]',
-			},
-			{
-				name: '',
-				type: 'uint256[]',
-				internalType: 'uint256[]',
-			},
-			{
-				name: '',
-				type: 'bytes',
-				internalType: 'bytes',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'bytes4',
-				internalType: 'bytes4',
-			},
-		],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'onERC1155Received',
-		inputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: '',
-				type: 'bytes',
-				internalType: 'bytes',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'bytes4',
-				internalType: 'bytes4',
-			},
-		],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'owner',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'renounceOwnership',
-		inputs: [],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'repay',
-		inputs: [
-			{
-				name: 'amount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'setLiquidationTimeWindow',
-		inputs: [
-			{
-				name: '_timeWindowInSeconds',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'setProtocolYield',
-		inputs: [
-			{
-				name: '_protocolYieldInBips',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'setSafetyFee',
-		inputs: [
-			{
-				name: '_safetyFeeInBips',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'setStablesStakingAddress',
-		inputs: [
-			{
-				name: '_address',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'stableToken',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'contract IMintableERC20',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'stakeNFT',
-		inputs: [
-			{
-				name: 'nftAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'stakeNFTandStables',
-		inputs: [
-			{
-				name: 'nftAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'amountNft',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'stakeStables',
-		inputs: [
-			{
-				name: 'amount_to_stake',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'supportsInterface',
-		inputs: [
-			{
-				name: 'interfaceId',
-				type: 'bytes4',
-				internalType: 'bytes4',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'bool',
-				internalType: 'bool',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'transferOwnership',
-		inputs: [
-			{
-				name: 'newOwner',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'unstakeNFT',
-		inputs: [
-			{
-				name: 'nftAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'userAvailableToBorrow',
-		inputs: [
-			{
-				name: 'userAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'userNFTs',
-		inputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'whitelistNFT',
-		inputs: [
-			{
-				name: 'nftAddress',
-				type: 'address',
-				internalType: 'address',
-			},
-			{
-				name: 'status',
-				type: 'bool',
-				internalType: 'bool',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'whitelistedNFTs',
-		inputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'bool',
-				internalType: 'bool',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'event',
-		name: 'Borrowed',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-		],
-		anonymous: false,
-	},
-	{
-		type: 'event',
-		name: 'Liquidated',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'liquidator',
-				type: 'address',
-				indexed: false,
-				internalType: 'address',
-			},
-			{
-				name: 'nftAddress',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-		],
-		anonymous: false,
-	},
-	{
-		type: 'event',
-		name: 'NFTStaked',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'nftAddress',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-		],
-		anonymous: false,
-	},
-	{
-		type: 'event',
-		name: 'NFTUnstaked',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'nftAddress',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'tokenId',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-		],
-		anonymous: false,
-	},
-	{
-		type: 'event',
-		name: 'OwnershipTransferred',
-		inputs: [
-			{
-				name: 'previousOwner',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'newOwner',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-		],
-		anonymous: false,
-	},
-	{
-		type: 'event',
-		name: 'Repaid',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-		],
-		anonymous: false,
-	},
-	{
-		type: 'error',
 		name: 'BorrowAmountExceedsLimit',
-		inputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
+		type: 'error',
 	},
 	{
-		type: 'error',
+		inputs: [],
 		name: 'InsufficientBalanceToRepay',
-		inputs: [],
+		type: 'error',
 	},
 	{
-		type: 'error',
+		inputs: [],
 		name: 'InsufficientNFTBalance',
-		inputs: [],
+		type: 'error',
 	},
 	{
-		type: 'error',
+		inputs: [],
 		name: 'NFTNotWhitelisted',
-		inputs: [],
+		type: 'error',
 	},
 	{
-		type: 'error',
-		name: 'NotEnoughCollateral',
 		inputs: [
 			{
+				internalType: 'uint256',
 				name: '',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 		],
+		name: 'NotEnoughCollateral',
+		type: 'error',
 	},
 	{
-		type: 'error',
-		name: 'OwnableInvalidOwner',
 		inputs: [
 			{
+				internalType: 'address',
 				name: 'owner',
 				type: 'address',
-				internalType: 'address',
 			},
 		],
+		name: 'OwnableInvalidOwner',
+		type: 'error',
 	},
 	{
-		type: 'error',
-		name: 'OwnableUnauthorizedAccount',
 		inputs: [
 			{
+				internalType: 'address',
 				name: 'account',
 				type: 'address',
-				internalType: 'address',
 			},
 		],
+		name: 'OwnableUnauthorizedAccount',
+		type: 'error',
 	},
 	{
-		type: 'error',
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: 'x',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'y',
+				type: 'uint256',
+			},
+		],
 		name: 'PRBMath_MulDiv18_Overflow',
-		inputs: [
-			{
-				name: 'x',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'y',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
+		type: 'error',
 	},
 	{
-		type: 'error',
-		name: 'PRBMath_MulDiv_Overflow',
 		inputs: [
 			{
+				internalType: 'uint256',
 				name: 'x',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 			{
+				internalType: 'uint256',
 				name: 'y',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 			{
+				internalType: 'uint256',
 				name: 'denominator',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 		],
+		name: 'PRBMath_MulDiv_Overflow',
+		type: 'error',
 	},
 	{
-		type: 'error',
+		inputs: [
+			{
+				internalType: 'UD60x18',
+				name: 'x',
+				type: 'uint256',
+			},
+		],
 		name: 'PRBMath_UD60x18_Exp2_InputTooBig',
-		inputs: [
-			{
-				name: 'x',
-				type: 'uint256',
-				internalType: 'UD60x18',
-			},
-		],
+		type: 'error',
 	},
 	{
-		type: 'error',
+		inputs: [
+			{
+				internalType: 'UD60x18',
+				name: 'x',
+				type: 'uint256',
+			},
+		],
 		name: 'PRBMath_UD60x18_Log_InputTooSmall',
-		inputs: [
-			{
-				name: 'x',
-				type: 'uint256',
-				internalType: 'UD60x18',
-			},
-		],
+		type: 'error',
 	},
 	{
-		type: 'error',
-		name: 'TooEarlyToLiquidate',
 		inputs: [],
+		name: 'TooEarlyToLiquidate',
+		type: 'error',
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'user',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'Borrowed',
+		type: 'event',
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'user',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'address',
+				name: 'liquidator',
+				type: 'address',
+			},
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'tokenId',
+				type: 'uint256',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'Liquidated',
+		type: 'event',
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'user',
+				type: 'address',
+			},
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'tokenId',
+				type: 'uint256',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'NFTStaked',
+		type: 'event',
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'user',
+				type: 'address',
+			},
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'tokenId',
+				type: 'uint256',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'NFTUnstaked',
+		type: 'event',
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'previousOwner',
+				type: 'address',
+			},
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'newOwner',
+				type: 'address',
+			},
+		],
+		name: 'OwnershipTransferred',
+		type: 'event',
+	},
+	{
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'user',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'Repaid',
+		type: 'event',
+	},
+	{
+		inputs: [],
+		name: 'LIQUIDATION_TIME_WINDOW',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'PROTOCOL_YIELD',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'RewardsTransfered',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'SAFETY_FEE',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'STABLES_STAKING_ADDRESS',
+		outputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'borrow',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: 'totalAmount',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'fromTime',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'toTime',
+				type: 'uint256',
+			},
+		],
+		name: 'calculateMaxBorrow',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'getRewardAmount',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'getRewards',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'getTotalStats',
+		outputs: [
+			{
+				components: [
+					{
+						internalType: 'uint256',
+						name: 'staked',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'borrowed',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'debt',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'debtUpdateTimestamp',
+						type: 'uint256',
+					},
+				],
+				internalType: 'struct NFTStakingAndBorrowing.TotalStats',
+				name: '',
+				type: 'tuple',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'userAddress',
+				type: 'address',
+			},
+		],
+		name: 'getUserStats',
+		outputs: [
+			{
+				components: [
+					{
+						internalType: 'uint256',
+						name: 'staked',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'nominalAvailable',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'borrowed',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'debt',
+						type: 'uint256',
+					},
+					{
+						internalType: 'uint256',
+						name: 'debtUpdateTimestamp',
+						type: 'uint256',
+					},
+				],
+				internalType: 'struct NFTStakingAndBorrowing.UserStats',
+				name: '',
+				type: 'tuple',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				internalType: 'uint256',
+				name: 'tokenId',
+				type: 'uint256',
+			},
+			{
+				internalType: 'address',
+				name: 'positionOwner',
+				type: 'address',
+			},
+		],
+		name: 'liquidate',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+			{
+				internalType: 'uint256[]',
+				name: '',
+				type: 'uint256[]',
+			},
+			{
+				internalType: 'uint256[]',
+				name: '',
+				type: 'uint256[]',
+			},
+			{
+				internalType: 'bytes',
+				name: '',
+				type: 'bytes',
+			},
+		],
+		name: 'onERC1155BatchReceived',
+		outputs: [
+			{
+				internalType: 'bytes4',
+				name: '',
+				type: 'bytes4',
+			},
+		],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+			{
+				internalType: 'bytes',
+				name: '',
+				type: 'bytes',
+			},
+		],
+		name: 'onERC1155Received',
+		outputs: [
+			{
+				internalType: 'bytes4',
+				name: '',
+				type: 'bytes4',
+			},
+		],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'owner',
+		outputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'renounceOwnership',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'repay',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_timeWindowInSeconds',
+				type: 'uint256',
+			},
+		],
+		name: 'setLiquidationTimeWindow',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_protocolYieldInBPS',
+				type: 'uint256',
+			},
+		],
+		name: 'setProtocolYield',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_safetyFeeInBPS',
+				type: 'uint256',
+			},
+		],
+		name: 'setSafetyFee',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_address',
+				type: 'address',
+			},
+		],
+		name: 'setStablesStakingAddress',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'stableToken',
+		outputs: [
+			{
+				internalType: 'contract IMintableERC20',
+				name: '',
+				type: 'address',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				internalType: 'uint256',
+				name: 'tokenId',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'stakeNFT',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'bytes4',
+				name: 'interfaceId',
+				type: 'bytes4',
+			},
+		],
+		name: 'supportsInterface',
+		outputs: [
+			{
+				internalType: 'bool',
+				name: '',
+				type: 'bool',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'newOwner',
+				type: 'address',
+			},
+		],
+		name: 'transferOwnership',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				internalType: 'uint256',
+				name: 'tokenId',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
+		name: 'unstakeNFT',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'userAddress',
+				type: 'address',
+			},
+		],
+		name: 'userAvailableToBorrow',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		name: 'userNFTs',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: 'nftAddress',
+				type: 'address',
+			},
+			{
+				internalType: 'bool',
+				name: 'status',
+				type: 'bool',
+			},
+		],
+		name: 'whitelistNFT',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+		],
+		name: 'whitelistedNFTs',
+		outputs: [
+			{
+				internalType: 'bool',
+				name: '',
+				type: 'bool',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
 	},
 ] as const

@@ -1,289 +1,271 @@
 export const StableCoinsStakingAbi = [
 	{
-		type: 'constructor',
 		inputs: [
 			{
+				internalType: 'address',
 				name: '_stakingToken',
 				type: 'address',
-				internalType: 'address',
 			},
 			{
+				internalType: 'address',
 				name: '_externalRewardContract',
 				type: 'address',
-				internalType: 'address',
 			},
 		],
 		stateMutability: 'nonpayable',
+		type: 'constructor',
 	},
 	{
-		type: 'function',
-		name: 'claimRewards',
 		inputs: [],
-		outputs: [],
-		stateMutability: 'nonpayable',
+		name: 'NoRewardsAvailable',
+		type: 'error',
 	},
 	{
-		type: 'function',
-		name: 'expectedAPY',
 		inputs: [
 			{
-				name: '_staker',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [
-			{
+				internalType: 'uint256',
 				name: '',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 		],
-		stateMutability: 'view',
+		name: 'NotEnoughStaked',
+		type: 'error',
 	},
 	{
-		type: 'function',
-		name: 'externalRewardContract',
 		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'contract IExternalRewardContract',
-			},
-		],
-		stateMutability: 'view',
+		name: 'ZeroAmountNotAllowed',
+		type: 'error',
 	},
 	{
-		type: 'function',
-		name: 'lastUpdateTime',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'pendingRewards',
+		anonymous: false,
 		inputs: [
 			{
-				name: '_staker',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'rewardPerTokenStored',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'stake',
-		inputs: [
-			{
-				name: '_amount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'stakeOnBehalfOf',
-		inputs: [
-			{
-				name: '_amount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'onBehalfOf',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'function',
-		name: 'stakers',
-		inputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'address',
-			},
-		],
-		outputs: [
-			{
-				name: 'stakedAmount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'rewardPaid',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'userRewardPerTokenPaid',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'rewardsEarned',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-			{
-				name: 'stakeTimestamp',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'stakingToken',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'address',
-				internalType: 'contract IERC20',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'totalStaked',
-		inputs: [],
-		outputs: [
-			{
-				name: '',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		stateMutability: 'view',
-	},
-	{
-		type: 'function',
-		name: 'withdraw',
-		inputs: [
-			{
-				name: '_amount',
-				type: 'uint256',
-				internalType: 'uint256',
-			},
-		],
-		outputs: [],
-		stateMutability: 'nonpayable',
-	},
-	{
-		type: 'event',
-		name: 'RewardClaimed',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
 				indexed: true,
 				internalType: 'address',
+				name: 'user',
+				type: 'address',
 			},
 			{
+				indexed: false,
+				internalType: 'uint256',
 				name: 'reward',
 				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
 			},
 		],
-		anonymous: false,
+		name: 'RewardClaimed',
+		type: 'event',
 	},
 	{
-		type: 'event',
+		anonymous: false,
+		inputs: [
+			{
+				indexed: true,
+				internalType: 'address',
+				name: 'user',
+				type: 'address',
+			},
+			{
+				indexed: false,
+				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
+			},
+		],
 		name: 'Staked',
-		inputs: [
-			{
-				name: 'user',
-				type: 'address',
-				indexed: true,
-				internalType: 'address',
-			},
-			{
-				name: 'amount',
-				type: 'uint256',
-				indexed: false,
-				internalType: 'uint256',
-			},
-		],
-		anonymous: false,
-	},
-	{
 		type: 'event',
-		name: 'Withdrawn',
+	},
+	{
+		anonymous: false,
 		inputs: [
 			{
-				name: 'user',
-				type: 'address',
 				indexed: true,
 				internalType: 'address',
+				name: 'user',
+				type: 'address',
 			},
 			{
-				name: 'amount',
-				type: 'uint256',
 				indexed: false,
 				internalType: 'uint256',
+				name: 'amount',
+				type: 'uint256',
 			},
 		],
-		anonymous: false,
+		name: 'Withdrawn',
+		type: 'event',
 	},
 	{
-		type: 'error',
-		name: 'NoRewardsAvailable',
 		inputs: [],
+		name: 'claimRewards',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
 	},
 	{
-		type: 'error',
-		name: 'NotEnoughStaked',
 		inputs: [
 			{
+				internalType: 'address',
+				name: '_staker',
+				type: 'address',
+			},
+		],
+		name: 'expectedAPY',
+		outputs: [
+			{
+				internalType: 'uint256',
 				name: '',
 				type: 'uint256',
-				internalType: 'uint256',
 			},
 		],
+		stateMutability: 'view',
+		type: 'function',
 	},
 	{
-		type: 'error',
-		name: 'ZeroAmountNotAllowed',
 		inputs: [],
+		name: 'externalRewardContract',
+		outputs: [
+			{
+				internalType: 'contract IExternalRewardContract',
+				name: '',
+				type: 'address',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'lastUpdateTime',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '_staker',
+				type: 'address',
+			},
+		],
+		name: 'pendingRewards',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'rewardPerTokenStored',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_amount',
+				type: 'uint256',
+			},
+		],
+		name: 'stake',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'address',
+				name: '',
+				type: 'address',
+			},
+		],
+		name: 'stakers',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: 'stakedAmount',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'rewardPaid',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'userRewardPerTokenPaid',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'rewardsEarned',
+				type: 'uint256',
+			},
+			{
+				internalType: 'uint256',
+				name: 'stakeTimestamp',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'stakingToken',
+		outputs: [
+			{
+				internalType: 'contract IERC20',
+				name: '',
+				type: 'address',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [],
+		name: 'totalStaked',
+		outputs: [
+			{
+				internalType: 'uint256',
+				name: '',
+				type: 'uint256',
+			},
+		],
+		stateMutability: 'view',
+		type: 'function',
+	},
+	{
+		inputs: [
+			{
+				internalType: 'uint256',
+				name: '_amount',
+				type: 'uint256',
+			},
+		],
+		name: 'withdraw',
+		outputs: [],
+		stateMutability: 'nonpayable',
+		type: 'function',
 	},
 ] as const
