@@ -36,7 +36,7 @@ export const BorrowModal = () => {
 	const account = useActiveAccount()
 	const chain = useActiveWalletChain()
 	const { mutateAsync } = useSendTransaction()
-	const { fetchUserStats } = useStore(userSelector)
+	const { fetchUserStats, fetchERC20 } = useStore(userSelector)
 
 	const [amount, setAmount] = useState('')
 	const [gas, setGas] = useState('0.00')
@@ -115,6 +115,7 @@ export const BorrowModal = () => {
 
 			await fetchUserStats(account.address, chain)
 			await fetchAvailableToBorrow()
+			await fetchERC20(account.address, chain)
 			setOpen(false)
 		} catch (error) {
 			console.log(error)
