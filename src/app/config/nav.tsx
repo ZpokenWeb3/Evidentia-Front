@@ -13,6 +13,7 @@ export enum PagePath {
 	Minted = '/dashboard/minted',
 	Loans = '/dashboard/loans',
 	Staking = '/dashboard/staking',
+	KYC = '/kyc',
 }
 
 export const navLinks: NavLink[] = [
