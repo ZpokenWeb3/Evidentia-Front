@@ -20,7 +20,8 @@ export default function Dashboard() {
 					<BondsData />
 					<p className='pb-3 pt-10 text-lg font-bold leading-7'>Bonds</p>
 					<div className='flex items-center justify-between pb-3'>
-						<TabWrapper activeTab={PagePath.Dashboard} tabs={bondTabs} />
+						{/* <TabWrapper activeTab={PagePath.Dashboard} tabs={bondTabs} /> */}
+						<div />
 						<Link
 							href={PagePath.SelectBond}
 							className={cn(

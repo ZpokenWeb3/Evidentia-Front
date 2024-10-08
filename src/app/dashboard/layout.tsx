@@ -12,12 +12,15 @@ export default function DashboardLayout({
 }) {
 	const chain = useActiveWalletChain()
 	const account = useActiveAccount()
-	const { fetchData, fetchUserStats } = useStore(userSelector)
+	const { fetchData, fetchUserStats, fetchStake, fetchERC20 } =
+		useStore(userSelector)
 
 	useEffect(() => {
 		if (!chain || !account) return
 		void fetchData(account.address, chain)
 		void fetchUserStats(account.address, chain)
+		void fetchStake(account.address, chain)
+		void fetchERC20(account.address, chain)
 	}, [chain, account])
 	return <>{children}</>
 }

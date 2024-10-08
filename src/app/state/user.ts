@@ -1,13 +1,18 @@
-import { Chain, readContract } from 'thirdweb'
+import { Chain, getContract, readContract } from 'thirdweb'
 import { AllSlices, SliceCreator } from '.'
+import { StableBondCoinsAbi } from '../abi/StableBondCoins'
+import { addresses } from '../config/addresses'
 import { allBonds } from '../config/bonds'
+import { erc20, SBC } from '../config/erc20'
+import { thirdwebClient } from '../config/thirdweb'
 import {
 	getNftContract,
+	getStableCoinsStaking,
 	getStakingAndBorrowingContract,
 } from '../lib/contracts'
 import { BondStatus, UserBond } from '../types/bonds'
-import { addresses } from '../config/addresses'
-import { UserStats } from '../types/user'
+import { UserStake, UserStats } from '../types/user'
+import { UserERC20 } from '../types/erc20'
 
 const ZERO_BIG_INT = BigInt(0)
 
@@ -32,17 +37,34 @@ export interface UserSlice {
 	fetchData: (account: string, chain: Chain) => Promise<void>
 	userStats: UserStats
 	fetchUserStats: (account: string, chain: Chain) => Promise<void>
+	userStake: UserStake
+	fetchStake: (account: string, chain: Chain) => Promise<void>
+	mainERC20: UserERC20
+	userERC20: UserERC20[]
+	fetchERC20: (account: string, chain: Chain) => Promise<void>
 }
 
 export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 	return {
 		userBonds: [],
+		userERC20: [],
+		mainERC20: {
+			...SBC,
+			balance: ZERO_BIG_INT,
+		},
 		userStats: {
 			borrowed: ZERO_BIG_INT,
 			debt: ZERO_BIG_INT,
 			debtUpdateTimestamp: ZERO_BIG_INT,
 			nominalAvailable: ZERO_BIG_INT,
 			staked: ZERO_BIG_INT,
+		},
+		userStake: {
+			stakedAmount: ZERO_BIG_INT,
+			rewardPaid: ZERO_BIG_INT,
+			userRewardPerTokenPaid: ZERO_BIG_INT,
+			rewardsEarned: ZERO_BIG_INT,
+			stakeTimestamp: ZERO_BIG_INT,
 		},
 		fetchData: async (account, chain) => {
 			const allowedBonds = await Promise.all(
@@ -95,7 +117,6 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 				state.user.userBonds = filtered
 			})
 		},
-
 		fetchUserStats: async (account, chain) => {
 			const stakingAndBorrowingContract = getStakingAndBorrowingContract(chain)
 
@@ -107,6 +128,52 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 
 			set(state => {
 				state.user.userStats = userStats
+			})
+		},
+		fetchStake: async (account, chain) => {
+			const stableCoinsStakingContract = getStableCoinsStaking(chain)
+
+			const stakers = await readContract({
+				contract: stableCoinsStakingContract,
+				method: 'stakers',
+				params: [account],
+			})
+
+			const userStake = {
+				stakedAmount: stakers[0],
+				rewardPaid: stakers[1],
+				userRewardPerTokenPaid: stakers[2],
+				rewardsEarned: stakers[3],
+				stakeTimestamp: stakers[4],
+			}
+
+			set(state => {
+				state.user.userStake = userStake
+			})
+		},
+		fetchERC20: async (account, chain) => {
+			const userERC20 = await Promise.all(
+				erc20.map(async i => {
+					const contract = getContract({
+						chain,
+						address: i.address[chain.id],
+						client: thirdwebClient,
+						abi: StableBondCoinsAbi,
+					})
+
+					const balance = await readContract({
+						contract,
+						method: 'balanceOf',
+						params: [account],
+					})
+
+					return { ...i, balance }
+				})
+			)
+
+			set(state => {
+				state.user.userERC20 = userERC20
+				state.user.mainERC20 = userERC20[0]
 			})
 		},
 	}

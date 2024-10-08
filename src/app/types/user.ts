@@ -5,3 +5,11 @@ export interface UserStats {
 	nominalAvailable: bigint
 	staked: bigint
 }
+
+export interface UserStake {
+	stakedAmount: bigint
+	rewardPaid: bigint
+	userRewardPerTokenPaid: bigint
+	rewardsEarned: bigint
+	stakeTimestamp: bigint
+}

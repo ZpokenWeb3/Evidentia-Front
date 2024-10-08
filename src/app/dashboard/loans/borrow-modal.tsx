@@ -54,8 +54,6 @@ export const BorrowModal = () => {
 			client: thirdwebClient,
 		})
 
-		console.log(parseUnits(amount, 6).toString())
-
 		return prepareContractCall({
 			contract,
 			method: 'function borrow(uint256 amount)',
