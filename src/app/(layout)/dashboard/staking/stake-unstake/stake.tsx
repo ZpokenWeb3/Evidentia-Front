@@ -77,8 +77,8 @@ export const Stake = () => {
 				transactionHash,
 			})
 
-			await fetchStake(account.address, chain)
-			await fetchERC20(account.address, chain)
+			// await fetchStake(account.address, chain)
+			// await fetchERC20(account.address, chain)
 		} catch (error) {
 			console.log(error)
 		}

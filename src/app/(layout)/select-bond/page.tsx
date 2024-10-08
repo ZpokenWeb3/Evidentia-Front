@@ -19,6 +19,8 @@ import { thirdwebClient } from '../../config/thirdweb'
 import { setAllowedMints } from '../../lib/admin-func'
 import { Step1 } from './step-1'
 import { Step2 } from './step-2'
+import { hashString } from '@/app/lib/string'
+import { getNftContract } from '@/app/lib/contracts'
 
 export default function SelectBond() {
 	const router = useRouter()
@@ -28,6 +30,9 @@ export default function SelectBond() {
 	const [select, setSelect] = useState('')
 	const [amount, setAmount] = useState('')
 	const [step, setStep] = useState<1 | 2>(1)
+
+	console.log('912797LX3', BigInt(hashString('912797LX3')))
+	console.log('912797NB9', BigInt(hashString('912797NB9')))
 
 	const mint = async () => {
 		if (!account?.address || !chain) return
@@ -45,10 +50,12 @@ export default function SelectBond() {
 				})
 
 				const availableToMint = await readContract({
-					contract,
-					method: 'function remainingMints(address user, uint256 id)',
+					contract: getNftContract(chain),
+					method: 'remainingMints',
 					params: [account.address, tokenId],
 				})
+
+				console.log({ availableToMint })
 
 				const transaction = prepareContractCall({
 					contract,
@@ -57,6 +64,8 @@ export default function SelectBond() {
 				})
 
 				const { transactionHash } = await mutateAsync(transaction)
+
+				console.log({ mint: transactionHash })
 
 				await waitForReceipt({
 					client: thirdwebClient,

@@ -39,6 +39,8 @@ export const setAllowedMints = async (
 		transaction,
 	})
 
+	console.log({ allow: transactionHash })
+
 	await waitForReceipt({
 		client: thirdwebClient,
 		chain,

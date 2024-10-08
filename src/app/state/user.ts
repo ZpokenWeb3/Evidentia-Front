@@ -68,55 +68,63 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 			expectedAPY: ZERO_BIG_INT,
 		},
 		fetchData: async (account, chain) => {
-			const allowedBonds = await Promise.all(
-				allBonds.map(async i => {
-					const nftContract = getNftContract(chain)
+			try {
+				const allowedBonds = await Promise.all(
+					allBonds.map(async i => {
+						const nftContract = getNftContract(chain)
 
-					const allowedToMints = await readContract({
-						contract: nftContract,
-						method: 'allowedMints',
-						params: [account, BigInt(i.tokenId)],
+						const allowedToMints = await readContract({
+							contract: nftContract,
+							method: 'allowedMints',
+							params: [account, BigInt(i.tokenId)],
+						})
+
+						if (!allowedToMints) return null
+
+						const stakingAndBorrowingContract =
+							getStakingAndBorrowingContract(chain)
+
+						const staked = await readContract({
+							contract: stakingAndBorrowingContract,
+							method: 'userNFTs',
+							params: [
+								account,
+								addresses[chain.id]!.BOND_NFT,
+								BigInt(i.tokenId),
+							],
+						})
+
+						const availableToMint = await readContract({
+							contract: nftContract,
+							method: 'remainingMints',
+							params: [account, BigInt(i.tokenId)],
+						})
+
+						const minted = await readContract({
+							contract: nftContract,
+							method: 'balanceOf',
+							params: [account, BigInt(i.tokenId)],
+						})
+
+						return {
+							...i,
+							allowedToMints,
+							availableToMint,
+							staked,
+							minted,
+							status: getStatus(allowedToMints, availableToMint, staked),
+						}
 					})
+				)
 
-					if (!allowedToMints) return null
+				const filtered = allowedBonds.filter(i => i !== null)
 
-					const stakingAndBorrowingContract =
-						getStakingAndBorrowingContract(chain)
-
-					const staked = await readContract({
-						contract: stakingAndBorrowingContract,
-						method: 'userNFTs',
-						params: [account, addresses[chain.id]!.BOND_NFT, BigInt(i.tokenId)],
-					})
-
-					const availableToMint = await readContract({
-						contract: nftContract,
-						method: 'remainingMints',
-						params: [account, BigInt(i.tokenId)],
-					})
-
-					const minted = await readContract({
-						contract: nftContract,
-						method: 'balanceOf',
-						params: [account, BigInt(i.tokenId)],
-					})
-
-					return {
-						...i,
-						allowedToMints,
-						availableToMint,
-						staked,
-						minted,
-						status: getStatus(allowedToMints, availableToMint, staked),
-					}
+				set(state => {
+					state.user.userBonds = filtered
 				})
-			)
-
-			const filtered = allowedBonds.filter(i => i !== null)
-
-			set(state => {
-				state.user.userBonds = filtered
-			})
+			} catch (error) {
+				console.log(error)
+			}
 		},
 		fetchUserStats: async (account, chain) => {
 			const stakingAndBorrowingContract = getStakingAndBorrowingContract(chain)
@@ -126,6 +134,8 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 				method: 'getUserStats',
 				params: [account],
 			})
+
+			console.log(userStats)
 
 			set(state => {
 				state.user.userStats = userStats
