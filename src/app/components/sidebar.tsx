@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '../lib/utils'
-import { navLinks, PagePath } from './header'
+import { navLinks, PagePath } from '../config/nav'
 
 export const Sidebar = () => {
 	const pathname = usePathname() as PagePath

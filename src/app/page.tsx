@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { PagePath } from './components/header'
+import { PagePath } from './config/nav'
 
 export default function Hone() {
 	redirect(PagePath.Dashboard)
