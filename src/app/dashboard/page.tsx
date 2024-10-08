@@ -1,5 +1,5 @@
 import { AllBonds } from './all-bonds'
-import { bondTabs, dashboardTabs } from './constants'
+import { dashboardTabs } from './constants'
 import { BondsData } from './bonds-data'
 import { TabWrapper } from './shared/tab-wrapper'
 import { buttonVariants } from '../components/ui/button'

@@ -18,21 +18,19 @@ import {
 	useActiveWalletChain,
 	useSendTransaction,
 } from 'thirdweb/react'
-import { getStakingAndBorrowingContract } from '../../lib/contracts'
 import {
 	estimateGasCost,
 	getContract,
 	prepareContractCall,
-	readContract,
 	waitForReceipt,
 } from 'thirdweb'
-import { formatUnits, parseUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'ethers/lib/utils'
 import { addresses } from '../../config/addresses'
 import { thirdwebClient } from '../../config/thirdweb'
 import { userSelector } from '@/app/state/user'
 import { useStore } from '@/app/state'
 
-export const BorrowModal = () => {
+export const RepayModal = () => {
 	const account = useActiveAccount()
 	const chain = useActiveWalletChain()
 	const { mutateAsync } = useSendTransaction()
@@ -41,9 +39,8 @@ export const BorrowModal = () => {
 	const [amount, setAmount] = useState('')
 	const [gas, setGas] = useState('0.00')
 	const [open, setOpen] = useState<boolean>(false)
-	const [collateral, setCollateral] = useState<bigint>(BigInt(0))
 
-	const getBorrowTx = () => {
+	const getRepayTx = () => {
 		const contracts = addresses[chain!.id]
 
 		const { NFT_STAKING_AND_BORROWING } = contracts
@@ -56,17 +53,17 @@ export const BorrowModal = () => {
 
 		return prepareContractCall({
 			contract,
-			method: 'function borrow(uint256 amount)',
+			method: 'function repay(uint256 amount)',
 			params: [parseUnits(amount, 6).toBigInt()],
 		})
 	}
 
 	useEffect(() => {
 		void (async () => {
-			if (!chain || !account) return
+			if (!chain || !account || !amount) return
 
 			try {
-				const transaction = getBorrowTx()
+				const transaction = getRepayTx()
 
 				const gasCost = await estimateGasCost({
 					transaction,
@@ -74,37 +71,42 @@ export const BorrowModal = () => {
 				})
 
 				setGas(gasCost.ether)
-			} catch {}
+			} catch (error) {
+				console.log(error)
+			}
 		})()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chain, account, amount])
 
-	const fetchAvailableToBorrow = async () => {
+	const repay = async () => {
+		const contracts = addresses[chain!.id]
+		if (!chain || !contracts || !account) return
 		try {
-			const contract = getStakingAndBorrowingContract(chain!)
+			const { NFT_STAKING_AND_BORROWING, STABLE_BOND_COINS } = contracts
 
-			const userAvailableToBorrow = await readContract({
-				contract,
-				method: 'userAvailableToBorrow',
-				params: [account!.address],
+			// Approve erc20 for NFT_STAKING_AND_BORROWING contract
+			const ercContract = getContract({
+				chain,
+				address: STABLE_BOND_COINS,
+				client: thirdwebClient,
 			})
 
-			setCollateral(userAvailableToBorrow)
-		} catch (error) {
-			console.log(error)
-		}
-	}
+			const approveTx = prepareContractCall({
+				contract: ercContract,
+				method: 'function approve(address spender, uint256 value)',
+				params: [NFT_STAKING_AND_BORROWING, parseUnits(amount, 6).toBigInt()],
+			})
 
-	useEffect(() => {
-		if (!account || !chain) return
+			const { transactionHash: approveHash } = await mutateAsync(approveTx)
 
-		void fetchAvailableToBorrow()
-	}, [account, chain])
+			await waitForReceipt({
+				client: thirdwebClient,
+				chain,
+				transactionHash: approveHash,
+			})
 
-	const borrow = async () => {
-		if (!account || !chain) return
-		try {
-			const { transactionHash } = await mutateAsync(getBorrowTx())
+			//Repay
+			const { transactionHash } = await mutateAsync(getRepayTx())
 
 			await waitForReceipt({
 				client: thirdwebClient,
@@ -113,7 +115,7 @@ export const BorrowModal = () => {
 			})
 
 			await fetchUserStats(account.address, chain)
-			await fetchAvailableToBorrow()
+
 			setOpen(false)
 		} catch (error) {
 			console.log(error)
@@ -123,28 +125,27 @@ export const BorrowModal = () => {
 	return (
 		<Dialog open={open} onOpenChange={open => setOpen(open)}>
 			<DialogTrigger
-				className={cn(buttonVariants({ variant: 'secondary' }), 'w-[151px]')}
+				className={cn(buttonVariants({ variant: 'destructive' }), 'w-[151px]')}
 			>
-				Borrow
+				Repay
 			</DialogTrigger>
 			<DialogContent className='w-[438px]'>
 				<DialogHeader className='flex flex-row items-center gap-2'>
 					<div>
 						<ChartCandlestick className='size-6 stroke-2 text-icon' />
 					</div>
-					<DialogTitle className='text-xl font-medium'>Borrow</DialogTitle>
+					<DialogTitle className='text-xl font-medium'>Repay</DialogTitle>
 				</DialogHeader>
 				<div className='flex flex-col gap-4'>
 					<div className='flex flex-col gap-2'>
 						<p className='text-base font-semibold'>Amount</p>
 						<InputIcon
-							placeholder='Enter amount of borrow'
+							placeholder='Enter amount of repay'
 							icon={<Coins className='size-5 stroke-2 text-input-icon' />}
 							value={amount}
 							onChange={e => setAmount(e.target.value)}
 						/>
 					</div>
-					<p>Max to Borrow: {`${formatUnits(collateral.toString(), 6)} SBC`}</p>
 					<div className='flex flex-col gap-2'>
 						<p className='text-base font-semibold'>Transaction Fee</p>
 						<div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>
@@ -165,8 +166,8 @@ export const BorrowModal = () => {
 					>
 						Cancel
 					</Button>
-					<Button className='w-[136px]' onClick={() => void borrow()}>
-						Borrow
+					<Button className='w-[136px]' onClick={() => void repay()}>
+						Repay
 					</Button>
 				</DialogFooter>
 			</DialogContent>
