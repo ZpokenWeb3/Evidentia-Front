@@ -61,6 +61,7 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
 				BigInt(bond.tokenId),
 				BigInt(amount),
 			],
+			gas: BigInt(2_000_000),
 		})
 	}
 
