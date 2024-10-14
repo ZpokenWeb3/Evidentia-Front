@@ -3,12 +3,12 @@
 import moment from 'moment'
 import Image from 'next/image'
 import { useMemo } from 'react'
-import { DataTable } from '../../components/data-table'
-import { useStore } from '../../state'
-import { userSelector } from '../../state/user'
 import { allBondHeader } from './constants'
 import { Status } from './shared/status'
 import { TableAction } from './shared/table-action'
+import { useStore } from '../state'
+import { userSelector } from '../state/user'
+import { DataTable } from '../components/data-table'
 
 export const AllBonds = () => {
 	const { userBonds } = useStore(userSelector)

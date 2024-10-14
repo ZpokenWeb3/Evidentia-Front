@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react'
 import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react'
-import { useStore } from '../../state'
-import { userSelector } from '../../state/user'
+import { useStore } from '../state'
+import { userSelector } from '../state/user'
 
 export default function DashboardLayout({
 	children,

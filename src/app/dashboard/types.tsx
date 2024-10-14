@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { PagePath } from '../../config/nav'
+import { PagePath } from '../config/nav'
 
 export type DashboardTab =
 	| PagePath.Dashboard

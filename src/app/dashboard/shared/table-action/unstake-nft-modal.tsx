@@ -1,5 +1,18 @@
 'use client'
 
+import { InputIcon } from '@/app/components/input-icon'
+import { Button } from '@/app/components/ui/button'
+import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/app/components/ui/dialog'
+import { addresses } from '@/app/config/addresses'
+import { thirdwebClient } from '@/app/config/thirdweb'
+import { cutString, hashString } from '@/app/lib/string'
 import { UserBond } from '@/app/types/bonds'
 import { ChartCandlestick, Coins, Hash } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -9,19 +22,6 @@ import {
 	useActiveWalletChain,
 	useSendTransaction,
 } from 'thirdweb/react'
-import { InputIcon } from '../../../../components/input-icon'
-import { Button } from '../../../../components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '../../../../components/ui/dialog'
-import { addresses } from '../../../../config/addresses'
-import { thirdwebClient } from '../../../../config/thirdweb'
-import { cutString, hashString } from '../../../../lib/string'
 
 interface UnstakeNftModalProps {
 	bond: UserBond

@@ -1,7 +1,7 @@
 'use client'
 
-import { useStore } from '../../state'
-import { userSelector } from '../../state/user'
+import { useStore } from '../state'
+import { userSelector } from '../state/user'
 import { bondOverviews } from './constants'
 import { OverviewCards } from './shared/overview-cards'
 

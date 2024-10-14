@@ -1,3 +1,4 @@
+import { cn } from '@/app/lib/utils'
 import { BondStatus } from '@/app/types/bonds'
 import {
 	ArrowsUpFromLine,
@@ -7,7 +8,6 @@ import {
 	X,
 } from 'lucide-react'
 import { ReactNode } from 'react'
-import { cn } from '../../../lib/utils'
 
 const statusValues: Record<BondStatus, { icon: ReactNode; bg: string }> = {
 	[BondStatus.SUBMITTED]: {

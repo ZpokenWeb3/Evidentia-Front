@@ -2,10 +2,10 @@
 
 import { Hash, StickyNote } from 'lucide-react'
 import { Dispatch, SetStateAction, useMemo } from 'react'
-import { InputIcon } from '../../components/input-icon'
-import { SelectIcon } from '../../components/select-icon'
-import { Button } from '../../components/ui/button'
-import { allBonds } from '../../config/bonds'
+import { allBonds } from '../config/bonds'
+import { SelectIcon } from '../components/select-icon'
+import { InputIcon } from '../components/input-icon'
+import { Button } from '../components/ui/button'
 
 interface Step1Props {
 	amount: string

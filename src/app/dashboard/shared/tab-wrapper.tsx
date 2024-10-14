@@ -1,6 +1,6 @@
+import { Tab, Tabs } from '@/app/components/tabs'
 import { PagePath } from '@/app/config/nav'
-import { Tab, Tabs } from '../../../components/tabs'
-import { cn } from '../../../lib/utils'
+import { cn } from '@/app/lib/utils'
 
 interface TabWrapperProps {
 	activeTab: PagePath

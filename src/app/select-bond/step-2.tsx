@@ -1,7 +1,7 @@
 import { Check, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { Button } from '../../components/ui/button'
+import { Button } from '../components/ui/button'
 
 export const Step2 = ({ mint }: { mint: () => Promise<void> }) => {
 	const [step, setStep] = useState<number>(0)

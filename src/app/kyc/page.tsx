@@ -9,10 +9,10 @@ import {
 	UserSearch,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { InputIcon } from '../../components/input-icon'
-import { SelectIcon } from '../../components/select-icon'
-import { Button } from '../../components/ui/button'
-import { PagePath } from '../../config/nav'
+import { PagePath } from '../config/nav'
+import { InputIcon } from '../components/input-icon'
+import { SelectIcon } from '../components/select-icon'
+import { Button } from '../components/ui/button'
 
 export default function KYC() {
 	const router = useRouter()

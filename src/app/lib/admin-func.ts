@@ -7,8 +7,8 @@ import {
 	sendTransaction,
 	waitForReceipt,
 } from 'thirdweb'
-import { BondNFTAbi } from '../abi/BondNFT'
 import { addresses } from '../config/addresses'
+import { BondNFTAbi } from '../abi/BondNFT'
 
 export const setAllowedMints = async (
 	user: string,

@@ -13,14 +13,15 @@ import {
 	useActiveWalletChain,
 	useSendTransaction,
 } from 'thirdweb/react'
-import { addresses } from '../../config/addresses'
-import { PagePath } from '../../config/nav'
-import { thirdwebClient } from '../../config/thirdweb'
-import { setAllowedMints } from '../../lib/admin-func'
+
 import { Step1 } from './step-1'
 import { Step2 } from './step-2'
 import { hashString } from '@/app/lib/string'
 import { getNftContract } from '@/app/lib/contracts'
+import { setAllowedMints } from '../lib/admin-func'
+import { addresses } from '../config/addresses'
+import { thirdwebClient } from '../config/thirdweb'
+import { PagePath } from '../config/nav'
 
 export default function SelectBond() {
 	const router = useRouter()

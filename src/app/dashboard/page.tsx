@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { buttonVariants } from '../../components/ui/button'
-import { PagePath } from '../../config/nav'
-import { cn } from '../../lib/utils'
 import { AllBonds } from './all-bonds'
 import { BondsData } from './bonds-data'
 import { dashboardTabs } from './constants'
 import { TabWrapper } from './shared/tab-wrapper'
+import { PagePath } from '../config/nav'
+import { cn } from '../lib/utils'
+import { buttonVariants } from '../components/ui/button'
 
 export default function Dashboard() {
 	return (

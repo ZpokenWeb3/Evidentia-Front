@@ -1,9 +1,8 @@
 import { ChartCandlestick, FileMinus2, ReceiptText } from 'lucide-react'
-import { Tab } from '../../components/tabs'
-
-import { TableHeader } from '../../components/data-table'
-import { PagePath } from '../../config/nav'
 import { OverviewCard } from './types'
+import { PagePath } from '../config/nav'
+import { Tab } from '../components/tabs'
+import { TableHeader } from '../components/data-table'
 
 export const dashboardTabs: Tab[] = [
 	{ title: 'Bonds', href: PagePath.Dashboard, enabled: true },

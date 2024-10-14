@@ -1,5 +1,19 @@
 'use client'
 
+import { InputIcon } from '@/app/components/input-icon'
+import { Button, buttonVariants } from '@/app/components/ui/button'
+import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/app/components/ui/dialog'
+import { addresses } from '@/app/config/addresses'
+import { thirdwebClient } from '@/app/config/thirdweb'
+import { getStakingAndBorrowingContract } from '@/app/lib/contracts'
+import { cn } from '@/app/lib/utils'
 import { useStore } from '@/app/state'
 import { userSelector } from '@/app/state/user'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -17,20 +31,6 @@ import {
 	useActiveWalletChain,
 	useSendTransaction,
 } from 'thirdweb/react'
-import { InputIcon } from '../../../components/input-icon'
-import { Button, buttonVariants } from '../../../components/ui/button'
-import {
-	Dialog,
-	DialogContent,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '../../../components/ui/dialog'
-import { addresses } from '../../../config/addresses'
-import { thirdwebClient } from '../../../config/thirdweb'
-import { getStakingAndBorrowingContract } from '../../../lib/contracts'
-import { cn } from '../../../lib/utils'
 
 export const BorrowModal = () => {
 	const account = useActiveAccount()
