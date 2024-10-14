@@ -39,7 +39,7 @@ export const AllLoans = () => {
 									})()
 								}}
 							>
-								<Wallet className='size-5 stroke-2 text-input-icon cursor-pointer' />
+								<Wallet className='size-5 cursor-pointer stroke-2 text-input-icon' />
 							</div>
 						</div>
 					),

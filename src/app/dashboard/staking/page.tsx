@@ -13,7 +13,7 @@ export default function Staking() {
 					tabs={dashboardTabs}
 					className='border-b-[0.5px] border-border/40 px-6 pb-[18px]'
 				/>
-				<div className='flex flex-col px-6 pt-6 mb-10'>
+				<div className='mb-10 flex flex-col px-6 pt-6'>
 					<StakeData />
 				</div>
 				<div className='grid grid-cols-3 gap-[22px] px-6'>

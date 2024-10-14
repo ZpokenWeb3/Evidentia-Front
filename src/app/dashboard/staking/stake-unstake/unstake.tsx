@@ -28,7 +28,7 @@ export const Unstake = () => {
 	const unstake = async () => {
 		if (!account || !chain) return
 		try {
-			const contracts = addresses[chain.id]
+			const contracts = addresses[chain.id]!
 
 			const { STABLE_COINS_STAKING } = contracts
 
@@ -49,7 +49,7 @@ export const Unstake = () => {
 
 			await waitForReceipt({
 				client: thirdwebClient,
-				chain: chain!,
+				chain: chain,
 				transactionHash,
 			})
 
@@ -79,42 +79,42 @@ export const Unstake = () => {
 				<Button>Unstake</Button>
 			</form>
 			<div className='flex flex-col gap-[6px]'>
-				<div className='flex justify-between items-center'>
-					<p className='text-[12px] leading-[18px] font-normal'>
+				<div className='flex items-center justify-between'>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						Your Staked Balance
 					</p>
-					<p className='text-[12px] leading-[18px] font-normal'>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						{formatUnits(userStake.stakedAmount, mainERC20.decimals)}
 						{mainERC20.symbol}
 					</p>
 				</div>
-				<div className='flex justify-between items-center'>
-					<p className='text-[12px] leading-[18px] font-normal'>Your Balance</p>
-					<p className='text-[12px] leading-[18px] font-normal'>
+				<div className='flex items-center justify-between'>
+					<p className='text-[12px] font-normal leading-[18px]'>Your Balance</p>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						{formatUnits(mainERC20.balance, mainERC20.decimals)}
 						{mainERC20.symbol}
 					</p>
 				</div>
-				<div className='flex justify-between items-center'>
-					<p className='text-[12px] leading-[18px] font-normal'>
+				<div className='flex items-center justify-between'>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						Your Reward Amount
 					</p>
-					<p className='text-[12px] leading-[18px] font-normal'>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						{formatUnits(userStake.rewardsEarned, mainERC20.decimals)}
 						{mainERC20.symbol}
 					</p>
 				</div>
-				<div className='flex justify-between items-center'>
-					<p className='text-[12px] leading-[18px] font-normal'>
+				<div className='flex items-center justify-between'>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						Next Reward Yield
 					</p>
-					<p className='text-[12px] leading-[18px] font-normal'>0.654%</p>
+					<p className='text-[12px] font-normal leading-[18px]'>0.654%</p>
 				</div>
-				<div className='flex justify-between items-center'>
-					<p className='text-[12px] leading-[18px] font-normal'>
+				<div className='flex items-center justify-between'>
+					<p className='text-[12px] font-normal leading-[18px]'>
 						ROI (5 day Rate)
 					</p>
-					<p className='text-[12px] leading-[18px] font-normal'>8,4788%</p>
+					<p className='text-[12px] font-normal leading-[18px]'>8,4788%</p>
 				</div>
 			</div>
 		</div>

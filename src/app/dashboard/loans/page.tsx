@@ -20,7 +20,7 @@ export default function Loans() {
 					<p className='pb-3 pt-10 text-lg font-bold leading-7'>Active Loans</p>
 					<div className='flex items-center justify-between pb-3'>
 						<div />
-						<div className='flex gap-2 items-center'>
+						<div className='flex items-center gap-2'>
 							<RepayModal />
 							<BorrowModal />
 						</div>

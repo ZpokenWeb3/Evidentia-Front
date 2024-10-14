@@ -19,7 +19,7 @@ export default function KYC() {
 	return (
 		<div className='flex min-h-full flex-col gap-3 pb-6'>
 			<div className='flex grow flex-col items-center rounded bg-background-secondary pb-7 pt-6  shadow-[0px_4px_4px_0px_#00000040]'>
-				<div className='w-[524px] flex flex-col gap-10 items-center'>
+				<div className='flex w-[524px] flex-col items-center gap-10'>
 					<p className='text-xl font-semibold'>
 						Know Your Customer (KYC) verification.
 					</p>
@@ -29,7 +29,7 @@ export default function KYC() {
 							localStorage.setItem('KYC', 'true')
 							router.push(PagePath.SelectBond)
 						}}
-						className='flex flex-col gap-10 w-full'
+						className='flex w-full flex-col gap-10'
 					>
 						<div className='flex flex-col gap-4'>
 							<InputIcon

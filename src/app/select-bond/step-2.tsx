@@ -21,7 +21,7 @@ export const Step2 = ({ mint }: { mint: () => Promise<void> }) => {
 	}, [])
 
 	return (
-		<div className='grid grid-cols-2 w-full p-6'>
+		<div className='grid w-full grid-cols-2 p-6'>
 			<div className='flex flex-col justify-between'>
 				<div className='flex flex-col gap-[76px]'>
 					<p className='text-xl font-semibold'>
@@ -32,11 +32,11 @@ export const Step2 = ({ mint }: { mint: () => Promise<void> }) => {
 						<div className='flex flex-col gap-4'>
 							<div className='flex items-center gap-4'>
 								{step === 0 ? (
-									<div className='px-[6px] py-[2px] rounded-lg bg-status-ready'>
+									<div className='rounded-lg bg-status-ready px-[6px] py-[2px]'>
 										<RotateCcw className='size-4 stroke-2' />
 									</div>
 								) : (
-									<div className='px-[6px] py-[2px] rounded-lg bg-status-success'>
+									<div className='rounded-lg bg-status-success px-[6px] py-[2px]'>
 										<Check className='size-4 stroke-2' />
 									</div>
 								)}
@@ -47,11 +47,11 @@ export const Step2 = ({ mint }: { mint: () => Promise<void> }) => {
 							{step >= 1 && (
 								<div className='flex items-center gap-4'>
 									{step === 1 ? (
-										<div className='px-[6px] py-[2px] rounded-lg bg-status-ready'>
+										<div className='rounded-lg bg-status-ready px-[6px] py-[2px]'>
 											<RotateCcw className='size-4 stroke-2' />
 										</div>
 									) : (
-										<div className='px-[6px] py-[2px] rounded-lg bg-status-success'>
+										<div className='rounded-lg bg-status-success px-[6px] py-[2px]'>
 											<Check className='size-4 stroke-2' />
 										</div>
 									)}
@@ -63,11 +63,11 @@ export const Step2 = ({ mint }: { mint: () => Promise<void> }) => {
 							{step >= 2 && (
 								<div className='flex items-center gap-4'>
 									{step === 2 ? (
-										<div className='px-[6px] py-[2px] rounded-lg bg-status-ready'>
+										<div className='rounded-lg bg-status-ready px-[6px] py-[2px]'>
 											<RotateCcw className='size-4 stroke-2' />
 										</div>
 									) : (
-										<div className='px-[6px] py-[2px] rounded-lg bg-status-success'>
+										<div className='rounded-lg bg-status-success px-[6px] py-[2px]'>
 											<Check className='size-4 stroke-2' />
 										</div>
 									)}

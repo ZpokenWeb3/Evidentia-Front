@@ -29,14 +29,14 @@ export const Step1 = ({
 		}))
 	}, [])
 	return (
-		<div className='w-[524px] flex flex-col gap-10 items-center'>
+		<div className='flex w-[524px] flex-col items-center gap-10'>
 			<p className='text-xl font-semibold'>Select Bond</p>
 			<form
 				onSubmit={e => {
 					e.preventDefault()
 					setStep(2)
 				}}
-				className='flex flex-col gap-4 w-full'
+				className='flex w-full flex-col gap-4'
 			>
 				<SelectIcon
 					label='Bond'
