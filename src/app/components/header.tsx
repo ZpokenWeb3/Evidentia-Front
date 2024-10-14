@@ -1,33 +1,33 @@
-'use client'
+'use client';
 
-import { usePathname } from 'next/navigation'
-import { useMemo } from 'react'
-import { Connect } from './connect'
-import { navLinks, PagePath } from '../config/nav'
+import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
+import { Connect } from './connect';
+import { navLinks, PagePath } from '../config/nav';
 
 export const Header = () => {
-	const pathname = usePathname() as PagePath
+  const pathname = usePathname() as PagePath;
 
-	const label = useMemo(() => {
-		const v = [
-			...navLinks,
-			{
-				label: 'KYC Verificaton',
-				href: PagePath.KYC,
-			},
-			{
-				label: 'Sign collateral agreement',
-				href: PagePath.SelectBond,
-			},
-		].find(link => link.href === pathname)
+  const label = useMemo(() => {
+    const v = [
+      ...navLinks,
+      {
+        label: 'KYC Verificaton',
+        href: PagePath.KYC,
+      },
+      {
+        label: 'Sign collateral agreement',
+        href: PagePath.SelectBond,
+      },
+    ].find(link => link.href === pathname);
 
-		return v ? v.label : 'Dashboard'
-	}, [pathname])
+    return v ? v.label : 'Dashboard';
+  }, [pathname]);
 
-	return (
-		<header className='flex min-h-[60px] items-center justify-between bg-header pl-4 pr-[30px]'>
-			<h2 className='text-left text-2xl font-semibold leading-7'>{label}</h2>
-			<Connect />
-		</header>
-	)
-}
+  return (
+    <header className='flex min-h-[60px] items-center justify-between bg-header pl-4 pr-[30px]'>
+      <h2 className='text-left text-2xl font-semibold leading-7'>{label}</h2>
+      <Connect />
+    </header>
+  );
+};

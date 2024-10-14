@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation'
-import { PagePath } from './config/nav'
+import { redirect } from 'next/navigation';
+import { PagePath } from './config/nav';
 
 export default function Home() {
-	redirect(PagePath.Dashboard)
+  redirect(PagePath.Dashboard);
 }
