@@ -81,6 +81,12 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
 
             const minted = await readContract({
               contract: nftContract,
+              method: 'mintedPerUser',
+              params: [account, BigInt(i.tokenId)],
+            });
+
+            const availableToStake = await readContract({
+              contract: nftContract,
               method: 'balanceOf',
               params: [account, BigInt(i.tokenId)],
             });
@@ -91,6 +97,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
               availableToMint,
               staked,
               minted,
+              availableToStake,
             };
           }),
         );

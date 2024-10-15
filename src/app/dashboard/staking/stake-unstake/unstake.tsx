@@ -77,22 +77,19 @@ export const Unstake = () => {
         <div className='flex items-center justify-between'>
           <p className='text-[12px] font-normal leading-[18px]'>Your Staked Balance</p>
           <p className='text-[12px] font-normal leading-[18px]'>
-            {formatUnits(userStake.stakedAmount, mainERC20.decimals)}
-            {mainERC20.symbol}
+            {`${formatUnits(userStake.stakedAmount, mainERC20.decimals)} ${mainERC20.symbol}`}
           </p>
         </div>
         <div className='flex items-center justify-between'>
           <p className='text-[12px] font-normal leading-[18px]'>Your Balance</p>
           <p className='text-[12px] font-normal leading-[18px]'>
-            {formatUnits(mainERC20.balance, mainERC20.decimals)}
-            {mainERC20.symbol}
+            {`${formatUnits(mainERC20.balance, mainERC20.decimals)} ${mainERC20.symbol}`}
           </p>
         </div>
         <div className='flex items-center justify-between'>
           <p className='text-[12px] font-normal leading-[18px]'>Your Reward Amount</p>
           <p className='text-[12px] font-normal leading-[18px]'>
-            {formatUnits(userStake.rewardsEarned, mainERC20.decimals)}
-            {mainERC20.symbol}
+            {`${formatUnits(userStake.rewardsEarned, mainERC20.decimals)} ${mainERC20.symbol}`}
           </p>
         </div>
         <div className='flex items-center justify-between'>

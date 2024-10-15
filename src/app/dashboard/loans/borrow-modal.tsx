@@ -32,7 +32,7 @@ export const BorrowModal = () => {
   const account = useActiveAccount();
   const chain = useActiveWalletChain();
   const { mutateAsync } = useSendTransaction();
-  const { fetchUserStats, fetchERC20 } = useStore(userSelector);
+  const { mainERC20, fetchUserStats, fetchERC20 } = useStore(userSelector);
 
   const [amount, setAmount] = useState('');
   const [gas, setGas] = useState('0.00');
@@ -141,7 +141,10 @@ export const BorrowModal = () => {
               onChange={e => setAmount(e.target.value)}
             />
           </div>
-          <p>Max to Borrow: {`${formatUnits(collateral.toString(), 6)} SBC`}</p>
+          <p>
+            Max to Borrow:{' '}
+            {`${formatUnits(collateral.toString(), mainERC20.decimals)} ${mainERC20.symbol}`}
+          </p>
           <div className='flex flex-col gap-2'>
             <p className='text-base font-semibold'>Transaction Fee</p>
             <div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>

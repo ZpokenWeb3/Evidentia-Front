@@ -16,7 +16,7 @@ import { cutString, hashString } from '@/app/lib/string';
 import { UserBond } from '@/app/types/bonds';
 import { ChartCandlestick, Coins, Hash } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getContract, prepareContractCall } from 'thirdweb';
+import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 
 interface UnstakeNftModalProps {
@@ -45,21 +45,30 @@ export const UnstakeNftModal = ({ bond }: UnstakeNftModalProps) => {
 
     const { BOND_NFT, NFT_STAKING_AND_BORROWING } = contracts;
 
-    const stakeContract = getContract({
-      chain: chain,
-      address: NFT_STAKING_AND_BORROWING,
-      client: thirdwebClient,
-    });
+    try {
+      const stakeContract = getContract({
+        chain: chain,
+        address: NFT_STAKING_AND_BORROWING,
+        client: thirdwebClient,
+      });
 
-    const stakeTx = prepareContractCall({
-      contract: stakeContract,
-      method: 'function unstakeNFT(address nftAddress, uint256 tokenId, uint256 amount)',
-      params: [BOND_NFT, BigInt(hashString(bond.ISIN)), BigInt(amount)],
-    });
+      const stakeTx = prepareContractCall({
+        contract: stakeContract,
+        method: 'function unstakeNFT(address nftAddress, uint256 tokenId, uint256 amount)',
+        params: [BOND_NFT, BigInt(hashString(bond.ISIN)), BigInt(amount)],
+      });
 
-    const res = await mutateAsync(stakeTx);
+      const { transactionHash } = await mutateAsync(stakeTx);
 
-    console.log({ res });
+      await waitForReceipt({
+        client: thirdwebClient,
+        chain,
+        transactionHash,
+      });
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

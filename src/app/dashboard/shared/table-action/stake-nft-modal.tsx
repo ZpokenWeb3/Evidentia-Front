@@ -101,20 +101,18 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
         transactionHash: approveHash,
       });
 
-      console.log({ approveHash });
-
       // Stake NFT
       const stakeTx = getStakeTx();
 
       const { transactionHash } = await mutateAsync(stakeTx);
+
+      console.log(transactionHash);
 
       await waitForReceipt({
         client: thirdwebClient,
         chain,
         transactionHash,
       });
-
-      console.log({ transactionHash });
 
       await fetchData(account.address, chain);
 
@@ -156,7 +154,7 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
               value={amount}
               onChange={e => setAmount(e.target.value)}
             />
-            <p>Available to Stake: {bond.minted.toString()}</p>
+            <p>Available to Stake: {bond.availableToStake.toString()}</p>
           </div>
           <div className='flex flex-col gap-2'>
             <p className='text-base font-semibold'>Transaction Fee</p>

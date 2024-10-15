@@ -14,4 +14,5 @@ export interface UserBond extends Bond {
   availableToMint: bigint;
   staked: bigint;
   minted: bigint;
+  availableToStake: bigint;
 }
