@@ -17,17 +17,17 @@ export const bondTabs: Tab[] = [
 
 export const bondOverviews: OverviewCard[] = [
   {
-    title: 'Number of Bonds',
-    key: 'bonds',
+    title: 'Available for mint',
+    key: 'mint',
     icon: <FileMinus2 className='size-5 stroke-2 text-icon' />,
   },
   {
-    title: 'Total Value of Tokenized Bonds',
-    key: 'rwa',
+    title: 'Total bonds minted',
+    key: 'minted',
     icon: <ChartCandlestick className='size-5 stroke-2 text-icon' />,
   },
   {
-    title: 'Total value of Bonds in collateral',
+    title: 'Number of bonds  in collateral',
     key: 'collateral',
     icon: <ReceiptText className='size-5 stroke-2 text-icon' />,
   },
@@ -47,10 +47,9 @@ export const allBondHeader: TableHeader[] = [
     key: 'expirationTimestamp',
     value: 'Maturity date',
   },
-  {
-    key: 'status',
-    value: 'Status',
-  },
+  { key: 'availableToMint', value: 'Available for mint' },
+  { key: 'minted', value: 'Minted' },
+  { key: 'staked', value: 'In Collateral' },
   {
     key: 'action',
     value: '',

@@ -64,8 +64,6 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
           from: account.address,
         });
 
-        console.log(gasCost);
-
         setGas(gasCost.ether);
       } catch (error) {
         console.log(error);
@@ -103,6 +101,8 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
         transactionHash: approveHash,
       });
 
+      console.log({ approveHash });
+
       // Stake NFT
       const stakeTx = getStakeTx();
 
@@ -113,6 +113,8 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
         chain,
         transactionHash,
       });
+
+      console.log({ transactionHash });
 
       await fetchData(account.address, chain);
 

@@ -4,7 +4,6 @@ import moment from 'moment';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { allBondHeader } from './constants';
-import { Status } from './shared/status';
 import { TableAction } from './shared/table-action';
 import { useStore } from '../state';
 import { userSelector } from '../state/user';
@@ -25,12 +24,10 @@ export const AllBonds = () => {
         ),
         APY: <p>{i.APY}%</p>,
         expirationTimestamp: <p>{moment(i.expirationTimestamp * 1000).format('DD.MM.YYYY')}</p>,
-        status: (
-          <div className='flex items-center justify-center'>
-            <Status status={i.status} />
-          </div>
-        ),
         action: <TableAction bond={i} />,
+        minted: <p>{i.minted.toString()}</p>,
+        availableToMint: <p>{i.availableToMint.toString()}</p>,
+        staked: <p>{i.staked.toString()}</p>,
       };
     });
   }, [userBonds]);

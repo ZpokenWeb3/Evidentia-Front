@@ -16,9 +16,6 @@ export default function Dashboard() {
         <div className='flex flex-col px-6 pb-5 pt-6'>
           <BondsData />
           <p className='pb-3 pt-10 text-lg font-bold leading-7'>Bonds</p>
-          <div className='flex items-center justify-between pb-3'>
-            <div />
-          </div>
         </div>
         <AllBonds />
       </div>

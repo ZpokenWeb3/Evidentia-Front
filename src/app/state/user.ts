@@ -10,23 +10,11 @@ import {
   getStableCoinsStaking,
   getStakingAndBorrowingContract,
 } from '../lib/contracts';
-import { BondStatus, UserBond } from '../types/bonds';
+import { UserBond } from '../types/bonds';
 import { UserStake, UserStats } from '../types/user';
 import { UserERC20 } from '../types/erc20';
 
 const ZERO_BIG_INT = BigInt(0);
-
-const getStatus = (allowedToMints: bigint, availableToMint: bigint, staked: bigint) => {
-  if (!allowedToMints) {
-    return BondStatus.SUBMITTED;
-  } else if (availableToMint) {
-    return BondStatus.READY_FOR_MINT;
-  } else if (staked) {
-    return BondStatus.UNDER_COLLATERAL;
-  } else {
-    return BondStatus.MINTED;
-  }
-};
 
 export interface UserSlice {
   userBonds: UserBond[];
@@ -103,7 +91,6 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
               availableToMint,
               staked,
               minted,
-              status: getStatus(allowedToMints, availableToMint, staked),
             };
           }),
         );
@@ -125,8 +112,6 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
         method: 'getUserStats',
         params: [account],
       });
-
-      console.log(userStats);
 
       set(state => {
         state.user.userStats = userStats;

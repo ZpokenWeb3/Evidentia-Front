@@ -97,8 +97,26 @@ export const RepayModal = () => {
         transactionHash: approveHash,
       });
 
+      // const tx = getRepayTx();
+      const contract = getContract({
+        chain,
+        address: NFT_STAKING_AND_BORROWING,
+        client: thirdwebClient,
+      });
+
+      const tx = prepareContractCall({
+        contract,
+        method: 'function repay(uint256 amount)',
+        params: [parseUnits(amount, 6).toBigInt()],
+        gas: BigInt(2_000_000),
+      });
+
+      console.log({ tx });
+
       //Repay
-      const { transactionHash } = await mutateAsync(getRepayTx());
+      const { transactionHash } = await mutateAsync(tx);
+
+      console.log({ transactionHash });
 
       await waitForReceipt({
         client: thirdwebClient,
