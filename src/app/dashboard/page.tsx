@@ -1,11 +1,8 @@
-import Link from 'next/link';
 import { AllBonds } from './all-bonds';
 import { BondsData } from './bonds-data';
 import { dashboardTabs } from './constants';
 import { TabWrapper } from './shared/tab-wrapper';
 import { PagePath } from '../config/nav';
-import { cn } from '../lib/utils';
-import { buttonVariants } from '../components/ui/button';
 
 export default function Dashboard() {
   return (
@@ -20,14 +17,7 @@ export default function Dashboard() {
           <BondsData />
           <p className='pb-3 pt-10 text-lg font-bold leading-7'>Bonds</p>
           <div className='flex items-center justify-between pb-3'>
-            {/* <TabWrapper activeTab={PagePath.Dashboard} tabs={bondTabs} /> */}
             <div />
-            <Link
-              href={PagePath.SelectBond}
-              className={cn(buttonVariants({ variant: 'secondary' }), 'w-[136px]')}
-            >
-              Add Bond
-            </Link>
           </div>
         </div>
         <AllBonds />

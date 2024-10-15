@@ -113,7 +113,7 @@ export const MintModal = ({ bond }: MintModalProps) => {
                   rel='noopener noreferrer'
                   className='break-all text-base font-medium text-[#161822] underline'
                 >
-                  {cutString(addresses[chain.id]?.BOND_NFT, 7, 7)}
+                  {cutString((addresses[chain.id]?.BOND_NFT as string) ?? '', 7, 7)}
                 </a>
               </div>
             </div>
@@ -140,14 +140,13 @@ export const MintModal = ({ bond }: MintModalProps) => {
               </p>
             </div>
           </div>
-
           <div className='flex flex-col gap-2'>
             <p className='text-base font-semibold'>Transaction Fee</p>
             <div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>
               <div>
                 <Newspaper className='w-5 stroke-2 text-input-icon' />
               </div>
-              <p className='break-all text-base font-medium text-[#161822]'>{gas} XRP</p>
+              <p className='break-all text-base font-medium text-[#161822]'>{gas} ETH</p>
             </div>
           </div>
         </div>

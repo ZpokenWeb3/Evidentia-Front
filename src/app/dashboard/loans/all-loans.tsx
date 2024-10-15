@@ -30,7 +30,7 @@ export const AllLoans = () => {
                       await account.watchAsset({
                         type: 'ERC20',
                         options: {
-                          address: mainERC20.address[chain.id],
+                          address: mainERC20.address[chain.id]!,
                           symbol: mainERC20.symbol,
                           decimals: mainERC20.decimals,
                         },

@@ -18,7 +18,7 @@ export default function KYC() {
             onSubmit={e => {
               e.preventDefault();
               localStorage.setItem('KYC', 'true');
-              router.push(PagePath.SelectBond);
+              router.push(PagePath.Dashboard);
             }}
             className='flex w-full flex-col gap-10'
           >

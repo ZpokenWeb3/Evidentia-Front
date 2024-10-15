@@ -162,7 +162,7 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
               <div>
                 <Newspaper className='w-5 stroke-2 text-input-icon' />
               </div>
-              <p className='break-all text-base font-medium text-[#161822]'>{gas} XRP</p>
+              <p className='break-all text-base font-medium text-[#161822]'>{gas} ETH</p>
             </div>
           </div>
         </div>

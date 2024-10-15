@@ -9,19 +9,15 @@ export const Header = () => {
   const pathname = usePathname() as PagePath;
 
   const label = useMemo(() => {
-    const v = [
+    const currentPage = [
       ...navLinks,
       {
         label: 'KYC Verificaton',
         href: PagePath.KYC,
       },
-      {
-        label: 'Sign collateral agreement',
-        href: PagePath.SelectBond,
-      },
     ].find(link => link.href === pathname);
 
-    return v ? v.label : 'Dashboard';
+    return currentPage ? currentPage.label : 'Dashboard';
   }, [pathname]);
 
   return (

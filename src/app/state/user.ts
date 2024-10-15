@@ -169,7 +169,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
         erc20.map(async i => {
           const contract = getContract({
             chain,
-            address: i.address[chain.id],
+            address: i.address[chain.id]!,
             client: thirdwebClient,
             abi: StableBondCoinsAbi,
           });
@@ -183,10 +183,13 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
           return { ...i, balance };
         }),
       );
+      const firstElement = userERC20[0];
+
+      if (!firstElement) return;
 
       set(state => {
         state.user.userERC20 = userERC20;
-        state.user.mainERC20 = userERC20[0];
+        state.user.mainERC20 = firstElement;
       });
     },
   };
