@@ -10,15 +10,16 @@ import {
 } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
+import { formatNumber } from '@/app/lib/formatter';
 import { cutString } from '@/app/lib/string';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { BookUser, ChartCandlestick, Hash, Wallet } from 'lucide-react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
-import { ModalProps } from './types';
+import { BondModalProps } from './types';
 
-export const MintModal = ({ bond, open, toggleOpen }: ModalProps) => {
+export const MintModal = ({ bond, open, toggleOpen }: BondModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
@@ -28,7 +29,7 @@ export const MintModal = ({ bond, open, toggleOpen }: ModalProps) => {
     if (!chain || !account) return;
 
     try {
-      const transaction = prepareContractCall({
+      const tx = prepareContractCall({
         contract: getContract({
           chain,
           address: addresses[chain.id]!.BOND_NFT,
@@ -38,7 +39,7 @@ export const MintModal = ({ bond, open, toggleOpen }: ModalProps) => {
         params: [BigInt(bond.tokenId), bond.availableToMint, '0x'],
       });
 
-      const { transactionHash } = await mutateAsync(transaction);
+      const { transactionHash } = await mutateAsync(tx);
 
       await waitForReceipt({
         client: thirdwebClient,
@@ -99,7 +100,7 @@ export const MintModal = ({ bond, open, toggleOpen }: ModalProps) => {
                 <Wallet className='w-5 stroke-2 text-input-icon' />
               </div>
               <p className='break-all text-base font-medium text-[#161822]'>
-                {bond.availableToMint.toString()}
+                {formatNumber(bond.availableToMint)}
               </p>
             </div>
           </div>

@@ -5,8 +5,9 @@ import { allLoansHeader } from './constants';
 import { useStore } from '@/app/state';
 import { useActiveAccount, useActiveWalletChain } from 'thirdweb/react';
 import { userSelector } from '@/app/state/user';
-import { formatUnits } from 'ethers/lib/utils';
 import { Wallet } from 'lucide-react';
+import { formatAmount } from '@/app/lib/formatter';
+import { LoanTableActions } from './loan-table-actions';
 
 export const AllLoans = () => {
   const account = useActiveAccount();
@@ -44,8 +45,17 @@ export const AllLoans = () => {
             </div>
           ),
           weeklyInterest: '0',
-          borrowed: formatUnits(userStats.borrowed, mainERC20.decimals),
-          debt: formatUnits(userStats.debt, mainERC20.decimals),
+          borrowed: formatAmount({
+            amount: userStats.borrowed,
+            exponent: mainERC20.decimals,
+            commas: true,
+          }),
+          debt: formatAmount({
+            amount: userStats.debt,
+            exponent: mainERC20.decimals,
+            commas: true,
+          }),
+          action: <LoanTableActions />,
         },
       ]}
     />

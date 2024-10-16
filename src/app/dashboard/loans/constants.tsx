@@ -1,22 +1,22 @@
-import { ChartCandlestick, ReceiptText } from 'lucide-react';
 import { OverviewCard } from '../types';
 import { TableHeader } from '@/app/components/data-table';
+import { ChartIcon } from '../shared/chart-icon';
 
 export const loansOverviews: OverviewCard[] = [
   {
-    title: 'Borrowed',
+    title: 'Total Borrowed',
     key: 'totalBorrowed',
-    icon: <ChartCandlestick className='size-5 stroke-2 text-icon' />,
+    icon: <ChartIcon color='#3354F4' id='1' />,
   },
   {
     title: 'Weekly interest',
     key: 'totalWeeklyInterest',
-    icon: <ReceiptText className='size-5 stroke-2 text-icon' />,
+    icon: <ChartIcon color='#76DBE3' id='2' />,
   },
   {
-    title: 'Debt',
+    title: 'Total Debt',
     key: 'totalDebt',
-    icon: <ReceiptText className='size-5 stroke-2 text-icon' />,
+    icon: <ChartIcon color='#5D2EE8' id='3' />,
   },
 ];
 
@@ -33,5 +33,9 @@ export const allLoansHeader: TableHeader[] = [
   {
     key: 'debt',
     value: 'Debt',
+  },
+  {
+    key: 'action',
+    value: '',
   },
 ];

@@ -1,10 +1,10 @@
 'use client';
 
-import { formatUnits } from 'ethers/lib/utils';
 import { OverviewCards } from '../shared/overview-cards';
 import { loansOverviews } from './constants';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
+import { formatAmount } from '@/app/lib/formatter';
 
 export const LoansData = () => {
   const { userStats, mainERC20 } = useStore(userSelector);
@@ -14,8 +14,16 @@ export const LoansData = () => {
       title='Loans Overview'
       content={loansOverviews}
       contentData={{
-        totalDebt: `${formatUnits(userStats.debt, mainERC20.decimals)} ${mainERC20.symbol}`,
-        totalBorrowed: `${formatUnits(userStats.borrowed, mainERC20.decimals)} ${mainERC20.symbol}`,
+        totalDebt: `${formatAmount({
+          amount: userStats.debt,
+          exponent: mainERC20.decimals,
+          commas: true,
+        })} ${mainERC20.symbol}`,
+        totalBorrowed: `${formatAmount({
+          amount: userStats.borrowed,
+          exponent: mainERC20.decimals,
+          commas: true,
+        })} ${mainERC20.symbol}`,
         totalWeeklyInterest: '0',
       }}
       className='grid grid-cols-1 gap-3 md:grid-cols-3'

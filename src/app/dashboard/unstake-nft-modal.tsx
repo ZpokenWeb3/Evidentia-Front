@@ -11,68 +11,57 @@ import {
 } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
-import { cutString, hashString } from '@/app/lib/string';
-import { UserBond } from '@/app/types/bonds';
+import { cutString } from '@/app/lib/string';
+import { useStore } from '@/app/state';
+import { userSelector } from '@/app/state/user';
 import { ChartCandlestick, Coins, Hash } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
+import { BondModalProps } from './types';
 
-interface UnstakeNftModalProps {
-  bond: UserBond;
-  open: boolean;
-  setOpen: (val: boolean) => void;
-}
-
-export const UnstakeNftModal = ({ bond, open, setOpen }: UnstakeNftModalProps) => {
+export const UnstakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
+  const { fetchData } = useStore(userSelector);
 
   const [amount, setAmount] = useState('');
 
-  useEffect(() => {}, [amount, account]);
-
-  useEffect(() => {
-    if (!account || !chain) return;
-
-    void (async () => {})();
-  }, [account, chain]);
-
-  const stake = async () => {
+  const unstake = async () => {
     const contracts = addresses[chain!.id];
-    if (!chain || !contracts) return;
+    if (!chain || !contracts || !account) return;
 
     const { BOND_NFT, NFT_STAKING_AND_BORROWING } = contracts;
 
     try {
-      const stakeContract = getContract({
-        chain: chain,
-        address: NFT_STAKING_AND_BORROWING,
-        client: thirdwebClient,
-      });
-
-      const stakeTx = prepareContractCall({
-        contract: stakeContract,
+      const tx = prepareContractCall({
+        contract: getContract({
+          chain: chain,
+          address: NFT_STAKING_AND_BORROWING,
+          client: thirdwebClient,
+        }),
         method: 'function unstakeNFT(address nftAddress, uint256 tokenId, uint256 amount)',
-        params: [BOND_NFT, BigInt(hashString(bond.ISIN)), BigInt(amount)],
+        params: [BOND_NFT, BigInt(bond.tokenId), BigInt(amount)],
       });
 
-      const { transactionHash } = await mutateAsync(stakeTx);
+      const { transactionHash } = await mutateAsync(tx);
 
       await waitForReceipt({
         client: thirdwebClient,
         chain,
         transactionHash,
       });
-      setOpen(false);
+
+      await fetchData(account.address, chain);
+      toggleOpen(false);
     } catch (error) {
-      console.log(error);
+      console.log('Unstake NFT:', error);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={open => setOpen(open)}>
+    <Dialog open={open} onOpenChange={open => toggleOpen(open)}>
       <DialogContent className='w-[438px]'>
         <DialogHeader className='flex flex-row items-center gap-2'>
           <div>
@@ -88,7 +77,7 @@ export const UnstakeNftModal = ({ bond, open, setOpen }: UnstakeNftModalProps) =
                 <Hash className='w-5 stroke-2 text-input-icon' />
               </div>
               <p className='break-all text-base font-medium text-[#161822]'>
-                {cutString(BigInt(hashString(bond.ISIN)).toString(), 7, 7)}
+                {cutString(bond.tokenId, 7, 7)}
               </p>
             </div>
           </div>
@@ -98,15 +87,20 @@ export const UnstakeNftModal = ({ bond, open, setOpen }: UnstakeNftModalProps) =
               placeholder='Enter amount'
               icon={<Coins className='size-5 stroke-2 text-input-icon' />}
               value={amount}
-              onChange={e => setAmount(e.target.value)}
+              onChange={e => {
+                const val = e.target.value;
+                if (Number(val) < 0 || val.includes('.') || val.includes('e')) return;
+                setAmount(val);
+              }}
+              type='number'
             />
           </div>
         </div>
         <DialogFooter>
-          <Button className='w-[136px]' variant='destructive' onClick={() => setOpen(false)}>
+          <Button className='w-[136px]' variant='destructive' onClick={() => toggleOpen(false)}>
             Cancel
           </Button>
-          <Button className='w-[136px]' onClick={() => void stake()}>
+          <Button className='w-[136px]' onClick={() => void unstake()} disabled={!amount}>
             Stake
           </Button>
         </DialogFooter>

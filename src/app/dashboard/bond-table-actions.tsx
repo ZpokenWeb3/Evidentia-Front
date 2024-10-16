@@ -6,22 +6,22 @@ import { Ellipsis } from 'lucide-react';
 import { useState } from 'react';
 import { MintModal } from './mint-modal';
 import { StakeNftModal } from './stake-nft-modal';
-import { Modals } from './types';
+import { BondModals } from './types';
 import { UnstakeNftModal } from './unstake-nft-modal';
 
 interface TableActionProps {
   bond: UserBond;
 }
 
-export const TableAction = ({ bond }: TableActionProps) => {
+export const BondTableActions = ({ bond }: TableActionProps) => {
   const [openPopover, togglePopover] = useState<boolean>(false);
-  const [openModals, toggleModals] = useState<Record<Modals, boolean>>({
-    [Modals.MINT]: false,
-    [Modals.STAKE]: false,
-    [Modals.UNSTAKE]: false,
+  const [openModals, toggleModals] = useState<Record<BondModals, boolean>>({
+    [BondModals.MINT]: false,
+    [BondModals.STAKE]: false,
+    [BondModals.UNSTAKE]: false,
   });
 
-  const toggleModal = (type: Modals) => (open: boolean) => {
+  const toggleModal = (type: BondModals) => (open: boolean) => {
     toggleModals(state => ({ ...state, [type]: open }));
     togglePopover(false);
   };
@@ -35,34 +35,38 @@ export const TableAction = ({ bond }: TableActionProps) => {
         <PopoverContent className='w-[190px]'>
           <button
             className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => toggleModal(Modals.MINT)(true)}
+            onClick={() => toggleModal(BondModals.MINT)(true)}
           >
             Mint
           </button>
           <button
-            className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => toggleModal(Modals.STAKE)(true)}
+            className='w-full cursor-pointer border-t border-input-border px-3 py-[10px] text-left text-base font-medium focus:outline-none'
+            onClick={() => toggleModal(BondModals.STAKE)(true)}
           >
             Stake
           </button>
           <button
-            className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => toggleModal(Modals.UNSTAKE)(true)}
+            className='w-full cursor-pointer border-t border-input-border px-3 py-[10px] text-left text-base font-medium focus:outline-none'
+            onClick={() => toggleModal(BondModals.UNSTAKE)(true)}
           >
             Unstake
           </button>
         </PopoverContent>
       </Popover>
-      <MintModal bond={bond} open={openModals[Modals.MINT]} toggleOpen={toggleModal(Modals.MINT)} />
+      <MintModal
+        bond={bond}
+        open={openModals[BondModals.MINT]}
+        toggleOpen={toggleModal(BondModals.MINT)}
+      />
       <StakeNftModal
         bond={bond}
-        open={openModals[Modals.STAKE]}
-        toggleOpen={toggleModal(Modals.STAKE)}
+        open={openModals[BondModals.STAKE]}
+        toggleOpen={toggleModal(BondModals.STAKE)}
       />
       <UnstakeNftModal
         bond={bond}
-        open={openModals[Modals.UNSTAKE]}
-        setOpen={toggleModal(Modals.UNSTAKE)}
+        open={openModals[BondModals.UNSTAKE]}
+        toggleOpen={toggleModal(BondModals.UNSTAKE)}
       />
     </>
   );

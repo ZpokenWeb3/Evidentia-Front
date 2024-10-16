@@ -3,11 +3,12 @@
 import moment from 'moment';
 import Image from 'next/image';
 import { useMemo } from 'react';
-import { allBondHeader } from './constants';
-import { TableAction } from './shared/table-action';
+import { DataTable } from '../components/data-table';
+import { formatNumber } from '../lib/formatter';
 import { useStore } from '../state';
 import { userSelector } from '../state/user';
-import { DataTable } from '../components/data-table';
+import { BondTableActions } from './bond-table-actions';
+import { allBondHeader } from './constants';
 
 export const AllBonds = () => {
   const { userBonds } = useStore(userSelector);
@@ -24,10 +25,10 @@ export const AllBonds = () => {
         ),
         APY: <p>{i.APY}%</p>,
         expirationTimestamp: <p>{moment(i.expirationTimestamp * 1000).format('DD.MM.YYYY')}</p>,
-        action: <TableAction bond={i} />,
-        minted: <p>{i.minted.toString()}</p>,
-        availableToMint: <p>{i.availableToMint.toString()}</p>,
-        staked: <p>{i.staked.toString()}</p>,
+        action: <BondTableActions bond={i} />,
+        minted: <p>{formatNumber(i.minted)}</p>,
+        availableToMint: <p>{formatNumber(i.availableToMint)}</p>,
+        staked: <p>{formatNumber(i.staked)}</p>,
       };
     });
   }, [userBonds]);
