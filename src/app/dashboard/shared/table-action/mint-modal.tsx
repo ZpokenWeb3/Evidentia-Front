@@ -13,18 +13,12 @@ import { thirdwebClient } from '@/app/config/thirdweb';
 import { cutString } from '@/app/lib/string';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
-import { UserBond } from '@/app/types/bonds';
 import { BookUser, ChartCandlestick, Hash, Wallet } from 'lucide-react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
+import { ModalProps } from './types';
 
-interface MintModalProps {
-  bond: UserBond;
-  open: boolean;
-  toggleOpen: (val: boolean) => void;
-}
-
-export const MintModal = ({ bond, open, toggleOpen }: MintModalProps) => {
+export const MintModal = ({ bond, open, toggleOpen }: ModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
