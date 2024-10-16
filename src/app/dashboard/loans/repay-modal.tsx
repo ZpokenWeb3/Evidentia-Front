@@ -15,8 +15,8 @@ import { formatAmount } from '@/app/lib/formatter';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { parseUnits } from 'ethers/lib/utils';
-import { ChartCandlestick, Coins } from 'lucide-react';
-import { useState } from 'react';
+import { ChartCandlestick, Coins, Wallet } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 
@@ -32,6 +32,12 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
   const { mainERC20, userStats, fetchUserStats } = useStore(userSelector);
 
   const [amount, setAmount] = useState('');
+
+  const validationErrors = useMemo(() => {
+    return mainERC20.balance < parseUnits(amount || '0', mainERC20.decimals).toBigInt();
+  }, [amount, mainERC20]);
+
+  console.log({ validationErrors });
 
   const repay = async () => {
     const contracts = addresses[chain!.id];
@@ -109,7 +115,7 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
               }}
               type='number'
               maxValue={{
-                label: `Available to Repay: ${formatAmount({ amount: userStats.debt, exponent: mainERC20.decimals, commas: true })}`,
+                label: `Debt: ${formatAmount({ amount: userStats.debt, exponent: mainERC20.decimals, commas: true })}`,
                 onClick: () =>
                   setAmount(
                     formatAmount({
@@ -122,12 +128,31 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
               }}
             />
           </div>
+          <div className='flex flex-col gap-2'>
+            <p className='text-base font-semibold'>User Balance</p>
+            <div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>
+              <div>
+                <Wallet className='w-5 stroke-2 text-input-icon' />
+              </div>
+              <p className='break-all text-base font-medium text-[#161822]'>
+                {`${formatAmount({
+                  amount: mainERC20.balance,
+                  exponent: mainERC20.decimals,
+                  commas: true,
+                })} ${mainERC20.symbol}`}
+              </p>
+            </div>
+          </div>
         </div>
         <DialogFooter>
           <Button className='w-[136px]' variant='destructive' onClick={() => toggleOpen(false)}>
-            Repay All
+            Cancel
           </Button>
-          <Button className='w-[136px]' onClick={() => void repay()} disabled={!amount}>
+          <Button
+            className='w-[136px]'
+            onClick={() => void repay()}
+            disabled={!amount || validationErrors}
+          >
             Repay
           </Button>
         </DialogFooter>
