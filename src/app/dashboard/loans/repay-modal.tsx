@@ -11,6 +11,7 @@ import {
 } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
+import { formatAmount } from '@/app/lib/formatter';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { parseUnits } from 'ethers/lib/utils';
@@ -28,7 +29,7 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
   const account = useActiveAccount();
   const chain = useActiveWalletChain();
   const { mutateAsync } = useSendTransaction();
-  const { mainERC20, fetchUserStats } = useStore(userSelector);
+  const { mainERC20, userStats, fetchUserStats } = useStore(userSelector);
 
   const [amount, setAmount] = useState('');
 
@@ -101,13 +102,30 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
               placeholder='Enter amount of repay'
               icon={<Coins className='size-5 stroke-2 text-input-icon' />}
               value={amount}
-              onChange={e => setAmount(e.target.value)}
+              onChange={e => {
+                const val = e.target.value;
+                if (Number(val) < 0 || val.includes('e')) return;
+                setAmount(val);
+              }}
+              type='number'
+              maxValue={{
+                label: `Available to Repay: ${formatAmount({ amount: userStats.debt, exponent: mainERC20.decimals, commas: true })}`,
+                onClick: () =>
+                  setAmount(
+                    formatAmount({
+                      amount: userStats.debt,
+                      exponent: mainERC20.decimals,
+                      commas: false,
+                      decimalPlaces: mainERC20.decimals,
+                    }),
+                  ),
+              }}
             />
           </div>
         </div>
         <DialogFooter>
           <Button className='w-[136px]' variant='destructive' onClick={() => toggleOpen(false)}>
-            Cancel
+            Repay All
           </Button>
           <Button className='w-[136px]' onClick={() => void repay()} disabled={!amount}>
             Repay

@@ -9,13 +9,7 @@ export const Header = () => {
   const pathname = usePathname() as PagePath;
 
   const label = useMemo(() => {
-    const currentPage = [
-      ...navLinks,
-      {
-        label: 'KYC Verificaton',
-        href: PagePath.KYC,
-      },
-    ].find(link => link.href === pathname);
+    const currentPage = navLinks.find(link => link.href === pathname);
 
     return currentPage ? currentPage.label : 'Dashboard';
   }, [pathname]);

@@ -1,10 +1,7 @@
 'use client';
 
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { redirect, usePathname } from 'next/navigation';
 import { ThirdwebProvider } from 'thirdweb/react';
-import { PagePath } from './config/nav';
-import { useEffect } from 'react';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -39,21 +36,6 @@ export const Provider = ({
   children: React.ReactNode;
 }>) => {
   const queryClient = getQueryClient();
-  const pathname = usePathname() as PagePath;
-
-  useEffect(() => {
-    const KYC = localStorage.getItem('KYC');
-
-    if (pathname === PagePath.KYC) {
-      if (KYC) {
-        redirect(PagePath.Dashboard);
-      }
-    } else {
-      if (!KYC) {
-        redirect(PagePath.KYC);
-      }
-    }
-  }, [pathname]);
 
   return (
     <ThirdwebProvider>
