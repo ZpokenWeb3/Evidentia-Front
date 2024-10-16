@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { PagePath } from '../config/nav';
-import { UserBond } from '../types/bonds'
+import { UserBond } from '../types/bonds';
 
 export type DashboardTab = PagePath.Dashboard | PagePath.Loans | PagePath.Staking;
 
