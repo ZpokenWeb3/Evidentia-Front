@@ -7,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
@@ -15,62 +14,35 @@ import { cutString } from '@/app/lib/string';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { UserBond } from '@/app/types/bonds';
-import { BookUser, ChartCandlestick, Hash, Newspaper, Wallet } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { estimateGasCost, getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
+import { BookUser, ChartCandlestick, Hash, Wallet } from 'lucide-react';
+import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 
 interface MintModalProps {
   bond: UserBond;
+  open: boolean;
+  toggleOpen: (val: boolean) => void;
 }
 
-export const MintModal = ({ bond }: MintModalProps) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [gas, setGas] = useState('');
+export const MintModal = ({ bond, open, toggleOpen }: MintModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
   const { fetchData } = useStore(userSelector);
 
-  const getMintTx = () => {
-    const tokenId = BigInt(bond.tokenId);
-
-    const contract = getContract({
-      chain: chain!,
-      address: addresses[chain!.id]!.BOND_NFT,
-      client: thirdwebClient,
-    });
-
-    return prepareContractCall({
-      contract,
-      method: 'function mint(uint256 tokenId, uint256 amount, bytes data)',
-      params: [tokenId, bond.availableToMint, '0x'],
-    });
-  };
-
-  useEffect(() => {
-    void (async () => {
-      if (!chain || !account) return;
-
-      try {
-        const transaction = getMintTx();
-
-        const gasCost = await estimateGasCost({
-          transaction,
-          from: account.address,
-        });
-
-        setGas(gasCost.ether);
-      } catch {}
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain, account, bond]);
-
   const mint = async () => {
     if (!chain || !account) return;
 
     try {
-      const transaction = getMintTx();
+      const transaction = prepareContractCall({
+        contract: getContract({
+          chain,
+          address: addresses[chain.id]!.BOND_NFT,
+          client: thirdwebClient,
+        }),
+        method: 'function mint(uint256 tokenId, uint256 amount, bytes data)',
+        params: [BigInt(bond.tokenId), bond.availableToMint, '0x'],
+      });
 
       const { transactionHash } = await mutateAsync(transaction);
 
@@ -81,17 +53,14 @@ export const MintModal = ({ bond }: MintModalProps) => {
       });
 
       await fetchData(account.address, chain);
-      setOpen(false);
+      toggleOpen(false);
     } catch (error) {
-      console.log(error);
+      console.log('Mint:', error);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={open => setOpen(open)}>
-      <DialogTrigger className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'>
-        Mint
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={open => toggleOpen(open)}>
       <DialogContent className='w-[438px]'>
         <DialogHeader className='flex flex-row items-center gap-2'>
           <div>
@@ -130,7 +99,7 @@ export const MintModal = ({ bond }: MintModalProps) => {
             </div>
           </div>
           <div className='flex flex-col gap-2'>
-            <p className='text-base font-semibold'>Token Amount</p>
+            <p className='text-base font-semibold'>Available To Mint</p>
             <div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>
               <div>
                 <Wallet className='w-5 stroke-2 text-input-icon' />
@@ -140,21 +109,16 @@ export const MintModal = ({ bond }: MintModalProps) => {
               </p>
             </div>
           </div>
-          <div className='flex flex-col gap-2'>
-            <p className='text-base font-semibold'>Transaction Fee</p>
-            <div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>
-              <div>
-                <Newspaper className='w-5 stroke-2 text-input-icon' />
-              </div>
-              <p className='break-all text-base font-medium text-[#161822]'>{gas} ETH</p>
-            </div>
-          </div>
         </div>
         <DialogFooter>
-          <Button className='w-[136px]' variant='destructive' onClick={() => setOpen(false)}>
+          <Button className='w-[136px]' variant='destructive' onClick={() => toggleOpen(false)}>
             Cancel
           </Button>
-          <Button className='w-[136px]' onClick={() => void mint()}>
+          <Button
+            className='w-[136px]'
+            onClick={() => void mint()}
+            disabled={!Boolean(bond.availableToMint)}
+          >
             Mint
           </Button>
         </DialogFooter>

@@ -8,7 +8,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
@@ -21,14 +20,15 @@ import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thir
 
 interface UnstakeNftModalProps {
   bond: UserBond;
+  open: boolean;
+  setOpen: (val: boolean) => void;
 }
 
-export const UnstakeNftModal = ({ bond }: UnstakeNftModalProps) => {
+export const UnstakeNftModal = ({ bond, open, setOpen }: UnstakeNftModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
 
-  const [open, setOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState('');
 
   useEffect(() => {}, [amount, account]);
@@ -73,9 +73,6 @@ export const UnstakeNftModal = ({ bond }: UnstakeNftModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={open => setOpen(open)}>
-      <DialogTrigger className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'>
-        Unstake
-      </DialogTrigger>
       <DialogContent className='w-[438px]'>
         <DialogHeader className='flex flex-row items-center gap-2'>
           <div>

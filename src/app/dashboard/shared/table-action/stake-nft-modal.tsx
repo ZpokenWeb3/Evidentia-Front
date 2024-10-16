@@ -2,13 +2,7 @@
 
 import { InputIcon } from '@/app/components/input-icon';
 import { Button } from '@/app/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-} from '@/app/components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
 import { cutString, hashString } from '@/app/lib/string';
@@ -23,15 +17,16 @@ import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thir
 
 interface StakeNftModalProps {
   bond: UserBond;
+  open: boolean;
+  setOpen: (val: boolean) => void;
 }
 
-export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
+export const StakeNftModal = ({ bond, open, setOpen }: StakeNftModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
   const { fetchData } = useStore(userSelector);
 
-  const [open, setOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState('');
   const [gas, setGas] = useState('0.0');
 
@@ -124,9 +119,6 @@ export const StakeNftModal = ({ bond }: StakeNftModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={open => setOpen(open)}>
-      <DialogTrigger className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'>
-        Stake
-      </DialogTrigger>
       <DialogContent className='w-[438px]'>
         <DialogHeader className='flex flex-row items-center gap-2'>
           <div>
