@@ -14,55 +14,55 @@ interface TableActionProps {
 }
 
 export const TableAction = ({ bond }: TableActionProps) => {
-  const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const [openModals, setOpenModals] = useState<Record<Modals, boolean>>({
+  const [openPopover, togglePopover] = useState<boolean>(false);
+  const [openModals, toggleModals] = useState<Record<Modals, boolean>>({
     [Modals.MINT]: false,
     [Modals.STAKE]: false,
     [Modals.UNSTAKE]: false,
   });
 
-  const openModal = (type: Modals) => (val: boolean) => {
-    setOpenModals(state => ({ ...state, [type]: val }));
-    setOpenPopover(false);
+  const toggleModal = (type: Modals) => (open: boolean) => {
+    toggleModals(state => ({ ...state, [type]: open }));
+    togglePopover(false);
   };
 
   return (
     <>
-      <Popover open={openPopover} onOpenChange={op => setOpenPopover(op)}>
+      <Popover open={openPopover} onOpenChange={op => togglePopover(op)}>
         <PopoverTrigger asChild>
           <Ellipsis className='size-3 cursor-pointer' />
         </PopoverTrigger>
         <PopoverContent className='w-[190px]'>
           <button
             className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => openModal(Modals.MINT)(true)}
+            onClick={() => toggleModal(Modals.MINT)(true)}
           >
             Mint
           </button>
           <button
             className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => openModal(Modals.STAKE)(true)}
+            onClick={() => toggleModal(Modals.STAKE)(true)}
           >
             Stake
           </button>
           <button
             className='w-full cursor-pointer px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => openModal(Modals.UNSTAKE)(true)}
+            onClick={() => toggleModal(Modals.UNSTAKE)(true)}
           >
             Unstake
           </button>
         </PopoverContent>
       </Popover>
-      <MintModal bond={bond} open={openModals[Modals.MINT]} toggleOpen={openModal(Modals.MINT)} />
+      <MintModal bond={bond} open={openModals[Modals.MINT]} toggleOpen={toggleModal(Modals.MINT)} />
       <StakeNftModal
         bond={bond}
         open={openModals[Modals.STAKE]}
-        setOpen={openModal(Modals.STAKE)}
+        toggleOpen={toggleModal(Modals.STAKE)}
       />
       <UnstakeNftModal
         bond={bond}
         open={openModals[Modals.UNSTAKE]}
-        setOpen={openModal(Modals.UNSTAKE)}
+        setOpen={toggleModal(Modals.UNSTAKE)}
       />
     </>
   );
