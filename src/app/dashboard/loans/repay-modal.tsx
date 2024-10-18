@@ -37,8 +37,6 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
     return mainERC20.balance < parseUnits(amount || '0', mainERC20.decimals).toBigInt();
   }, [amount, mainERC20]);
 
-  console.log({ validationErrors });
-
   const repay = async () => {
     const contracts = addresses[chain!.id];
     if (!chain || !contracts || !account) return;

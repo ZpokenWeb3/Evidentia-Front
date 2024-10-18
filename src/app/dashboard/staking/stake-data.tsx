@@ -4,21 +4,32 @@ import { useStore } from '@/app/state';
 import { OverviewCards } from '../shared/overview-cards';
 import { stakeOverviews } from './constants';
 import { userSelector } from '@/app/state/user';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatAmount } from '@/app/lib/formatter';
+import { calculateAPY, calculateEstimatedEarnings } from './helpers';
 
 export const StakeData = () => {
   const { userStake, mainERC20 } = useStore(userSelector);
+
   return (
     <OverviewCards
       title='Staking  Overview'
       content={stakeOverviews}
       contentData={{
-        totalStaked: `${formatUnits(
+        totalStaked: `${formatAmount({
+          amount: userStake.stakedAmount,
+          exponent: mainERC20.decimals,
+          commas: true,
+        })} ${mainERC20.symbol}`,
+        apy: `${calculateAPY(userStake.expectedAPY).toFixed(2)}%`,
+        yearEarnings: `${calculateEstimatedEarnings(
+          userStake.expectedAPY,
           userStake.stakedAmount,
           mainERC20.decimals,
-        )} ${mainERC20.symbol}`,
-        apy: `${userStake.expectedAPY / BigInt(10000)}%`,
-        yearEarnings: `100 ${mainERC20.symbol}`,
+        ).toFormat(2, {
+          decimalSeparator: '.',
+          groupSeparator: ',',
+          groupSize: 3,
+        })} ${mainERC20.symbol}`,
       }}
     />
   );
