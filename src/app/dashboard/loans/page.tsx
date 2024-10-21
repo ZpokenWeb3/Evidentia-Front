@@ -1,9 +1,9 @@
 import { dashboardTabs } from '../constants';
 import { TabWrapper } from '../shared/tab-wrapper';
 import { LoansData } from './loans-data';
-import { BorrowModal } from './borrow-modal';
 import { PagePath } from '@/app/config/nav';
 import { AllLoans } from './all-loans';
+import { BorrowAction } from '../borrow-action';
 
 export default function Loans() {
   return (
@@ -19,7 +19,7 @@ export default function Loans() {
           <p className='pb-3 pt-10 text-lg font-bold leading-7'>Active Loans</p>
           <div className='flex items-center justify-between pb-3'>
             <div />
-            <BorrowModal />
+            <BorrowAction />
           </div>
         </div>
         <AllLoans />
