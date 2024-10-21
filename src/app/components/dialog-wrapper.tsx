@@ -7,6 +7,61 @@ import { TxStatus } from '../types/tx';
 import { BadgeCheck, ChartCandlestick, CircleX } from 'lucide-react';
 import { Button } from './ui/button';
 
+const Loader = () => {
+  return (
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+      <radialGradient
+        id='a1'
+        cx='.66'
+        fx='.66'
+        cy='.3125'
+        fy='.3125'
+        gradientTransform='scale(1.5)'
+      >
+        <stop offset='0' stop-color='#232C56'></stop>
+        <stop offset='.3' stop-color='#232C56' stop-opacity='.9'></stop>
+        <stop offset='.6' stop-color='#232C56' stop-opacity='.6'></stop>
+        <stop offset='.8' stop-color='#232C56' stop-opacity='.3'></stop>
+        <stop offset='1' stop-color='#232C56' stop-opacity='0'></stop>
+      </radialGradient>
+      <circle
+        transform-origin='center'
+        fill='none'
+        stroke='url(#a1)'
+        stroke-width='15'
+        stroke-linecap='round'
+        stroke-dasharray='200 1000'
+        stroke-dashoffset='0'
+        cx='100'
+        cy='100'
+        r='70'
+      >
+        <animateTransform
+          type='rotate'
+          attributeName='transform'
+          calcMode='spline'
+          dur='2'
+          values='360;0'
+          keyTimes='0;1'
+          keySplines='0 0 1 1'
+          repeatCount='indefinite'
+        ></animateTransform>
+      </circle>
+      <circle
+        transform-origin='center'
+        fill='none'
+        opacity='.2'
+        stroke='#232C56'
+        stroke-width='15'
+        stroke-linecap='round'
+        cx='100'
+        cy='100'
+        r='70'
+      ></circle>
+    </svg>
+  );
+};
+
 interface DialogWrapperProps {
   open: boolean;
   children: ReactElement;
@@ -26,7 +81,7 @@ export const DialogWrapper = ({
   handleTx,
   toggleOpen,
 }: DialogWrapperProps) => {
-  const [status, setStatus] = useState<TxStatus | undefined>();
+  const [status, setStatus] = useState<TxStatus | undefined>(TxStatus.PENDING);
 
   const action = async () => {
     try {
@@ -38,7 +93,7 @@ export const DialogWrapper = ({
       setStatus(TxStatus.ERROR);
     }
   };
-	
+
   return (
     <Dialog open={open} onOpenChange={open => toggleOpen(open)}>
       <DialogContent className={cn('w-[438px]', status && 'h-[260px]', className)}>
@@ -69,7 +124,9 @@ export const DialogWrapper = ({
         )}
         {status === TxStatus.PENDING && (
           <div className='flex flex-col items-center justify-center gap-2'>
-            <Loader />
+            <div className='size-[88px]'>
+              <Loader />
+            </div>
             <p className='mt-2 text-base font-semibold text-[#161822]'>Transaction is processing</p>
             <p className='text-sm font-medium text-input-icon'>Please wait...</p>
           </div>
@@ -109,50 +166,5 @@ export const DialogWrapper = ({
         )}
       </DialogContent>
     </Dialog>
-  );
-};
-
-const Loader = () => {
-  return (
-    <svg
-      width='106'
-      height='106'
-      viewBox='0 0 106 106'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path
-        d='M97.1666 53.0002C97.1666 77.3927 77.3925 97.1668 52.9999 97.1668C28.6073 97.1668 8.83325 77.3927 8.83325 53.0002C8.83325 28.6076 28.6073 8.8335 52.9999 8.8335C77.3925 8.8335 97.1666 28.6076 97.1666 53.0002ZM24.2916 53.0002C24.2916 68.8553 37.1447 81.7085 52.9999 81.7085C68.8551 81.7085 81.7082 68.8553 81.7082 53.0002C81.7082 37.145 68.8551 24.2918 52.9999 24.2918C37.1447 24.2918 24.2916 37.145 24.2916 53.0002Z'
-        fill='url(#paint0_angular_380_2839)'
-      />
-      <path
-        d='M52.9999 8.83318C58.8 8.83318 64.5432 9.97558 69.9018 12.1952C75.2603 14.4147 80.1292 17.668 84.2305 21.7693C88.3317 25.8705 91.585 30.7394 93.8046 36.098C96.0242 41.4565 97.1666 47.1998 97.1666 52.9998L81.7082 52.9998C81.7082 49.2298 80.9657 45.4967 79.5229 42.0136C78.0802 38.5306 75.9656 35.3658 73.2998 32.7C70.634 30.0342 67.4692 27.9195 63.9861 26.4768C60.5031 25.0341 56.7699 24.2915 52.9999 24.2915L52.9999 8.83318Z'
-        fill='url(#paint1_angular_380_2839)'
-      />
-      <defs>
-        <radialGradient
-          id='paint0_angular_380_2839'
-          cx='0'
-          cy='0'
-          r='1'
-          gradientUnits='userSpaceOnUse'
-          gradientTransform='translate(52.9999 53.0002) scale(44.1667)'
-        >
-          <stop offset='0.9999' stop-color='#232C56' />
-          <stop offset='1' stop-color='#212E6B' stop-opacity='0' />
-        </radialGradient>
-        <radialGradient
-          id='paint1_angular_380_2839'
-          cx='0'
-          cy='0'
-          r='1'
-          gradientUnits='userSpaceOnUse'
-          gradientTransform='translate(52.9999 52.9998) rotate(-90) scale(44.1667)'
-        >
-          <stop offset='0.9999' stop-color='#232C56' />
-          <stop offset='1' stop-color='#212E6B' stop-opacity='0' />
-        </radialGradient>
-      </defs>
-    </svg>
   );
 };
