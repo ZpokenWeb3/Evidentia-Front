@@ -128,7 +128,7 @@ export const DepositModal = ({ bond, open, toggleOpen }: BondModalProps) => {
           <Button
             className='w-[136px]'
             onClick={() => void stake()}
-            disabled={!amount || validationErrors}
+            disabled={!Number(amount) || validationErrors}
           >
             Deposit
           </Button>

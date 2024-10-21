@@ -4,6 +4,7 @@ export interface UserStats {
   debtUpdateTimestamp: bigint;
   nominalAvailable: bigint;
   staked: bigint;
+  availableToBorrow: bigint;
 }
 
 export interface UserStake {

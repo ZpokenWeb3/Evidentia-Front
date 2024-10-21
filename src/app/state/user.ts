@@ -18,7 +18,7 @@ const ZERO_BIG_INT = BigInt(0);
 
 const acc = '0x727D5f06F63A0645FBd51f414182c195Bb13b46B';
 
-const debbug = true;
+const debbug = false;
 
 export interface UserSlice {
   userBonds: UserBond[];
@@ -46,6 +46,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
       debtUpdateTimestamp: ZERO_BIG_INT,
       nominalAvailable: ZERO_BIG_INT,
       staked: ZERO_BIG_INT,
+      availableToBorrow: ZERO_BIG_INT,
     },
     userStake: {
       stakedAmount: ZERO_BIG_INT,
@@ -95,6 +96,15 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
               params: [debbug ? acc : account, BigInt(i.tokenId)],
             });
 
+            console.log({
+              ...i,
+              allowedToMints,
+              availableToMint,
+              staked,
+              minted,
+              availableToDeposit,
+            });
+
             return {
               ...i,
               allowedToMints,
@@ -124,8 +134,14 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
         params: [debbug ? acc : account],
       });
 
+      const availableToBorrow = await readContract({
+        contract: stakingAndBorrowingContract,
+        method: 'userAvailableToBorrow',
+        params: [debbug ? acc : account],
+      });
+
       set(state => {
-        state.user.userStats = userStats;
+        state.user.userStats = { ...userStats, availableToBorrow };
       });
     },
     fetchStake: async (account, chain) => {

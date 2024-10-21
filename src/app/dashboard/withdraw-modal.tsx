@@ -100,7 +100,7 @@ export const WithdrawModal = ({ bond, open, toggleOpen }: BondModalProps) => {
           <Button className='w-[136px]' variant='destructive' onClick={() => toggleOpen(false)}>
             Cancel
           </Button>
-          <Button className='w-[136px]' onClick={() => void unstake()} disabled={!amount}>
+          <Button className='w-[136px]' onClick={() => void unstake()} disabled={!Number(amount)}>
             Withdraw
           </Button>
         </DialogFooter>

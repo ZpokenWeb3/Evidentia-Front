@@ -12,48 +12,23 @@ import {
 } from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
-import { getStakingAndBorrowingContract } from '@/app/lib/contracts';
 import { cn } from '@/app/lib/utils';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { ChartCandlestick, Coins } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { getContract, prepareContractCall, readContract, waitForReceipt } from 'thirdweb';
+import { useState } from 'react';
+import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 
 export const BorrowModal = () => {
   const account = useActiveAccount();
   const chain = useActiveWalletChain();
   const { mutateAsync } = useSendTransaction();
-  const { mainERC20, fetchUserStats, fetchERC20 } = useStore(userSelector);
+  const { mainERC20, userStats, fetchUserStats, fetchERC20 } = useStore(userSelector);
 
   const [amount, setAmount] = useState('');
   const [open, setOpen] = useState<boolean>(false);
-  const [collateral, setCollateral] = useState<bigint>(BigInt(0));
-
-  const fetchAvailableToBorrow = async () => {
-    try {
-      const contract = getStakingAndBorrowingContract(chain!);
-
-      const userAvailableToBorrow = await readContract({
-        contract,
-        method: 'userAvailableToBorrow',
-        params: [account!.address],
-      });
-
-      setCollateral(userAvailableToBorrow);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!account || !chain) return;
-
-    void fetchAvailableToBorrow();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, chain]);
 
   const borrow = async () => {
     if (!account || !chain) return;
@@ -81,7 +56,6 @@ export const BorrowModal = () => {
       });
 
       await fetchUserStats(account.address, chain);
-      await fetchAvailableToBorrow();
       await fetchERC20(account.address, chain);
       setOpen(false);
     } catch (error) {
@@ -113,7 +87,7 @@ export const BorrowModal = () => {
           </div>
           <p>
             Max to Borrow:{' '}
-            {`${formatUnits(collateral.toString(), mainERC20.decimals)} ${mainERC20.symbol}`}
+            {`${formatUnits(userStats.availableToBorrow.toString(), mainERC20.decimals)} ${mainERC20.symbol}`}
           </p>
         </div>
         <DialogFooter>
