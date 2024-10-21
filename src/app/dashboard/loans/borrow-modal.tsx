@@ -17,15 +17,9 @@ import { cn } from '@/app/lib/utils';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
-import { ChartCandlestick, Coins, Newspaper } from 'lucide-react';
+import { ChartCandlestick, Coins } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import {
-  estimateGasCost,
-  getContract,
-  prepareContractCall,
-  readContract,
-  waitForReceipt,
-} from 'thirdweb';
+import { getContract, prepareContractCall, readContract, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 
 export const BorrowModal = () => {
@@ -35,46 +29,8 @@ export const BorrowModal = () => {
   const { mainERC20, fetchUserStats, fetchERC20 } = useStore(userSelector);
 
   const [amount, setAmount] = useState('');
-  const [gas, setGas] = useState('0.00');
   const [open, setOpen] = useState<boolean>(false);
   const [collateral, setCollateral] = useState<bigint>(BigInt(0));
-
-  const getBorrowTx = () => {
-    const contracts = addresses[chain!.id]!;
-
-    const { NFT_STAKING_AND_BORROWING } = contracts;
-
-    const contract = getContract({
-      chain: chain!,
-      address: NFT_STAKING_AND_BORROWING,
-      client: thirdwebClient,
-    });
-
-    return prepareContractCall({
-      contract,
-      method: 'function borrow(uint256 amount)',
-      params: [parseUnits(amount, 6).toBigInt()],
-      gas: BigInt(2_000_000),
-    });
-  };
-
-  useEffect(() => {
-    void (async () => {
-      if (!chain || !account) return;
-
-      try {
-        const transaction = getBorrowTx();
-
-        const gasCost = await estimateGasCost({
-          transaction,
-          from: account.address,
-        });
-
-        setGas(gasCost.ether);
-      } catch {}
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain, account, amount]);
 
   const fetchAvailableToBorrow = async () => {
     try {
@@ -102,7 +58,21 @@ export const BorrowModal = () => {
   const borrow = async () => {
     if (!account || !chain) return;
     try {
-      const { transactionHash } = await mutateAsync(getBorrowTx());
+      const contracts = addresses[chain.id]!;
+
+      const { NFT_STAKING_AND_BORROWING } = contracts;
+
+      const tx = prepareContractCall({
+        contract: getContract({
+          chain,
+          address: NFT_STAKING_AND_BORROWING,
+          client: thirdwebClient,
+        }),
+        method: 'function borrow(uint256 amount)',
+        params: [parseUnits(amount, 6).toBigInt()],
+      });
+
+      const { transactionHash } = await mutateAsync(tx);
 
       await waitForReceipt({
         client: thirdwebClient,
@@ -115,7 +85,7 @@ export const BorrowModal = () => {
       await fetchERC20(account.address, chain);
       setOpen(false);
     } catch (error) {
-      console.log(error);
+      console.log('Borrow', error);
     }
   };
 
@@ -145,15 +115,6 @@ export const BorrowModal = () => {
             Max to Borrow:{' '}
             {`${formatUnits(collateral.toString(), mainERC20.decimals)} ${mainERC20.symbol}`}
           </p>
-          <div className='flex flex-col gap-2'>
-            <p className='text-base font-semibold'>Transaction Fee</p>
-            <div className='flex items-center gap-3 rounded-lg border border-input-border px-3 py-[10px]'>
-              <div>
-                <Newspaper className='w-5 stroke-2 text-input-icon' />
-              </div>
-              <p className='break-all text-base font-medium text-[#161822]'>{gas} ETH</p>
-            </div>
-          </div>
         </div>
         <DialogFooter>
           <Button className='w-[136px]' variant='destructive' onClick={() => setOpen(false)}>
