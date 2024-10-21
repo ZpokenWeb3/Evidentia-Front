@@ -7,12 +7,13 @@ import { addresses } from '@/app/config/addresses';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { Coins } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { thirdwebClient } from '@/app/config/thirdweb';
 import { parseUnits } from 'ethers/lib/utils';
 import { formatAmount } from '@/app/lib/formatter';
 import { calculateFiveDayROI, calculateNextRewardYield } from '../helpers';
+import { Loader } from '@/app/components/loader';
 
 export const Stake = () => {
   const chain = useActiveWalletChain();
@@ -23,6 +24,7 @@ export const Stake = () => {
   const [amount, setAmount] = useState('');
   const [nextRewardYield, setNextRewardYield] = useState('0.00');
   const [roi, setRoi] = useState('0.00');
+  const [pending, setPending] = useState<boolean>(false);
 
   useEffect(() => {
     if (!chain) return;
@@ -34,10 +36,15 @@ export const Stake = () => {
     })();
   }, [chain, mainERC20]);
 
+  const validationErrors = useMemo(() => {
+    return mainERC20.balance < parseUnits(amount || '0', mainERC20.decimals).toBigInt();
+  }, [amount, mainERC20]);
+
   const stake = async () => {
     if (!account || !chain) return;
     try {
       const contracts = addresses[chain.id]!;
+      setPending(true);
 
       const { STABLE_COINS_STAKING, STABLE_BOND_COINS } = contracts;
       const value = parseUnits(amount, mainERC20.decimals).toBigInt();
@@ -75,7 +82,6 @@ export const Stake = () => {
         contract,
         method: 'function stake(uint256 amount)',
         params: [value],
-        gas: BigInt(2_000_000),
       });
 
       const { transactionHash } = await mutateAsync(tx);
@@ -90,6 +96,8 @@ export const Stake = () => {
       await fetchERC20(account.address, chain);
     } catch (error) {
       console.log(error);
+    } finally {
+      setPending(false);
     }
   };
 
@@ -104,12 +112,40 @@ export const Stake = () => {
       >
         <InputIcon
           icon={<Coins className='size-5 stroke-2 text-input-icon' />}
-          label='Amount of Staking'
           placeholder='Enter amount'
           value={amount}
-          onChange={e => setAmount(e.target.value)}
+          onChange={e => {
+            const val = e.target.value;
+            if (Number(val) < 0 || val.includes('e')) return;
+            setAmount(val);
+          }}
+          type='number'
+          maxValue={{
+            onClick: e => {
+              e.preventDefault();
+              setAmount(
+                formatAmount({
+                  amount: mainERC20.balance,
+                  exponent: mainERC20.decimals,
+                  commas: false,
+                  decimalPlaces: mainERC20.decimals,
+                }),
+              );
+            },
+          }}
         />
-        <Button>Stake</Button>
+        <Button
+          variant={pending ? 'destructive' : 'default'}
+          disabled={!Number(amount) || pending || validationErrors}
+        >
+          {!pending ? (
+            'Stake'
+          ) : (
+            <div className='size-8'>
+              <Loader />
+            </div>
+          )}
+        </Button>
       </form>
       <div className='flex flex-col gap-[6px]'>
         <div className='flex items-center justify-between'>

@@ -7,11 +7,12 @@ import { addresses } from '@/app/config/addresses';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
 import { Coins } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { thirdwebClient } from '@/app/config/thirdweb';
 import { parseUnits } from 'ethers/lib/utils';
 import { formatAmount } from '@/app/lib/formatter';
+import { Loader } from '@/app/components/loader';
 
 export const Unstake = () => {
   const chain = useActiveWalletChain();
@@ -20,11 +21,17 @@ export const Unstake = () => {
 
   const { userStake, mainERC20, fetchStake, fetchERC20 } = useStore(userSelector);
   const [amount, setAmount] = useState('');
+  const [pending, setPending] = useState<boolean>(false);
+
+  const validationErrors = useMemo(() => {
+    return userStake.stakedAmount < parseUnits(amount || '0', mainERC20.decimals).toBigInt();
+  }, [amount, userStake, mainERC20]);
 
   const unstake = async () => {
     if (!account || !chain) return;
     try {
       const contracts = addresses[chain.id]!;
+      setPending(true);
 
       const { STABLE_COINS_STAKING } = contracts;
 
@@ -53,6 +60,8 @@ export const Unstake = () => {
       await fetchERC20(account.address, chain);
     } catch (error) {
       console.log(error);
+    } finally {
+      setPending(false);
     }
   };
 
@@ -67,12 +76,40 @@ export const Unstake = () => {
       >
         <InputIcon
           icon={<Coins className='size-5 stroke-2 text-input-icon' />}
-          label='Amount of Unstaking'
           placeholder='Enter amount'
           value={amount}
-          onChange={e => setAmount(e.target.value)}
+          onChange={e => {
+            const val = e.target.value;
+            if (Number(val) < 0 || val.includes('e')) return;
+            setAmount(val);
+          }}
+          type='number'
+          maxValue={{
+            onClick: e => {
+              e.preventDefault();
+              setAmount(
+                formatAmount({
+                  amount: userStake.stakedAmount,
+                  exponent: mainERC20.decimals,
+                  commas: false,
+                  decimalPlaces: mainERC20.decimals,
+                }),
+              );
+            },
+          }}
         />
-        <Button>Unstake</Button>
+        <Button
+          variant={pending ? 'destructive' : 'default'}
+          disabled={!Number(amount) || pending || validationErrors}
+        >
+          {!pending ? (
+            'Unstake'
+          ) : (
+            <div className='size-8'>
+              <Loader />
+            </div>
+          )}
+        </Button>
       </form>
       <div className='flex flex-col gap-[6px]'>
         <div className='flex items-center justify-between'>

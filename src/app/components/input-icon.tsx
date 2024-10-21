@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { DOMAttributes, ReactNode } from 'react';
 import { Input, InputProps } from './ui/input';
 import { Button } from './ui/button';
 
@@ -6,8 +6,8 @@ interface InputIconProps extends InputProps {
   icon: ReactNode;
   label?: string;
   maxValue?: {
-    label: string;
-    onClick: () => void;
+    label?: string;
+    onClick: DOMAttributes<HTMLButtonElement>['onClick'];
   };
 }
 
@@ -29,7 +29,9 @@ export const InputIcon = ({ icon, label, maxValue, ...props }: InputIconProps) =
           </Button>
         )}
       </div>
-      {maxValue && <p className='text-[12px] font-normal leading-[18px]'>{maxValue.label}</p>}
+      {maxValue?.label && (
+        <p className='text-[12px] font-normal leading-[18px]'>{maxValue.label}</p>
+      )}
     </div>
   );
 };
