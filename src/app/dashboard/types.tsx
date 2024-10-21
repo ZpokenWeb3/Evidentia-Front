@@ -12,8 +12,8 @@ export interface OverviewCard {
 
 export enum BondModals {
   MINT = 'mint',
-  STAKE = 'stake',
-  UNSTAKE = 'unstake',
+  DEPOSIT = 'deposit',
+  WITHDRAW = 'withdraw',
 }
 
 export interface BondModalProps {

@@ -4,10 +4,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/app/components/ui/pop
 import { UserBond } from '@/app/types/bonds';
 import { Ellipsis } from 'lucide-react';
 import { useState } from 'react';
+import { DepositModal } from './deposit-modal';
 import { MintModal } from './mint-modal';
-import { StakeNftModal } from './stake-nft-modal';
 import { BondModals } from './types';
-import { UnstakeNftModal } from './unstake-nft-modal';
+import { WithdrawModal } from './withdraw-modal';
 
 interface TableActionProps {
   bond: UserBond;
@@ -17,8 +17,8 @@ export const BondTableActions = ({ bond }: TableActionProps) => {
   const [openPopover, togglePopover] = useState<boolean>(false);
   const [openModals, toggleModals] = useState<Record<BondModals, boolean>>({
     [BondModals.MINT]: false,
-    [BondModals.STAKE]: false,
-    [BondModals.UNSTAKE]: false,
+    [BondModals.DEPOSIT]: false,
+    [BondModals.WITHDRAW]: false,
   });
 
   const toggleModal = (type: BondModals) => (open: boolean) => {
@@ -41,15 +41,15 @@ export const BondTableActions = ({ bond }: TableActionProps) => {
           </button>
           <button
             className='w-full cursor-pointer border-t border-input-border px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => toggleModal(BondModals.STAKE)(true)}
+            onClick={() => toggleModal(BondModals.DEPOSIT)(true)}
           >
-            Stake
+            Deposit
           </button>
           <button
             className='w-full cursor-pointer border-t border-input-border px-3 py-[10px] text-left text-base font-medium focus:outline-none'
-            onClick={() => toggleModal(BondModals.UNSTAKE)(true)}
+            onClick={() => toggleModal(BondModals.WITHDRAW)(true)}
           >
-            Unstake
+            Withdraw
           </button>
         </PopoverContent>
       </Popover>
@@ -58,15 +58,15 @@ export const BondTableActions = ({ bond }: TableActionProps) => {
         open={openModals[BondModals.MINT]}
         toggleOpen={toggleModal(BondModals.MINT)}
       />
-      <StakeNftModal
+      <DepositModal
         bond={bond}
-        open={openModals[BondModals.STAKE]}
-        toggleOpen={toggleModal(BondModals.STAKE)}
+        open={openModals[BondModals.DEPOSIT]}
+        toggleOpen={toggleModal(BondModals.DEPOSIT)}
       />
-      <UnstakeNftModal
+      <WithdrawModal
         bond={bond}
-        open={openModals[BondModals.UNSTAKE]}
-        toggleOpen={toggleModal(BondModals.UNSTAKE)}
+        open={openModals[BondModals.WITHDRAW]}
+        toggleOpen={toggleModal(BondModals.WITHDRAW)}
       />
     </>
   );

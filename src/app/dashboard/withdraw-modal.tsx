@@ -2,21 +2,25 @@
 
 import { InputIcon } from '@/app/components/input-icon';
 import { Button } from '@/app/components/ui/button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/app/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/app/components/ui/dialog';
 import { addresses } from '@/app/config/addresses';
 import { thirdwebClient } from '@/app/config/thirdweb';
-import { formatNumber } from '@/app/lib/formatter';
 import { cutString } from '@/app/lib/string';
 import { useStore } from '@/app/state';
 import { userSelector } from '@/app/state/user';
-import { DialogTitle } from '@radix-ui/react-dialog';
 import { ChartCandlestick, Coins, Hash } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { useActiveAccount, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 import { BondModalProps } from './types';
 
-export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
+export const WithdrawModal = ({ bond, open, toggleOpen }: BondModalProps) => {
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { mutateAsync } = useSendTransaction();
@@ -24,48 +28,24 @@ export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
 
   const [amount, setAmount] = useState('');
 
-  const validationErrors = useMemo(() => {
-    return bond.availableToStake < BigInt(amount);
-  }, [amount, bond]);
-
-  const stake = async () => {
+  const unstake = async () => {
     const contracts = addresses[chain!.id];
     if (!chain || !contracts || !account) return;
 
     const { BOND_NFT, NFT_STAKING_AND_BORROWING } = contracts;
 
     try {
-      // Approve nfts for NFT_STAKING_AND_BORROWING contract
-      const approveTx = prepareContractCall({
-        contract: getContract({
-          chain: chain,
-          address: BOND_NFT,
-          client: thirdwebClient,
-        }),
-        method: 'function setApprovalForAll(address operator, bool approved)',
-        params: [NFT_STAKING_AND_BORROWING, true],
-      });
-
-      const { transactionHash: approveHash } = await mutateAsync(approveTx);
-
-      await waitForReceipt({
-        client: thirdwebClient,
-        chain,
-        transactionHash: approveHash,
-      });
-
-      // Stake NFT
-      const stakeTx = prepareContractCall({
+      const tx = prepareContractCall({
         contract: getContract({
           chain: chain,
           address: NFT_STAKING_AND_BORROWING,
           client: thirdwebClient,
         }),
-        method: 'function stakeNFT(address nftAddress, uint256 tokenId, uint256 amount)',
+        method: 'function unstakeNFT(address nftAddress, uint256 tokenId, uint256 amount)',
         params: [BOND_NFT, BigInt(bond.tokenId), BigInt(amount)],
       });
 
-      const { transactionHash } = await mutateAsync(stakeTx);
+      const { transactionHash } = await mutateAsync(tx);
 
       await waitForReceipt({
         client: thirdwebClient,
@@ -74,10 +54,9 @@ export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
       });
 
       await fetchData(account.address, chain);
-
       toggleOpen(false);
     } catch (error) {
-      console.log('Stake NFT:', error);
+      console.log('Unstake NFT:', error);
     }
   };
 
@@ -88,7 +67,7 @@ export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
           <div>
             <ChartCandlestick className='size-6 stroke-2 text-icon' />
           </div>
-          <DialogTitle className='text-xl font-medium'>Stake Bond NFT</DialogTitle>
+          <DialogTitle className='text-xl font-medium'>Withdraw Bond NFT</DialogTitle>
         </DialogHeader>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-col gap-2'>
@@ -102,7 +81,7 @@ export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
               </p>
             </div>
           </div>
-          <div className='flex flex-col gap-1'>
+          <div className='flex flex-col gap-2'>
             <p className='text-base font-semibold'>Amount</p>
             <InputIcon
               placeholder='Enter amount'
@@ -114,10 +93,6 @@ export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
                 setAmount(val);
               }}
               type='number'
-              maxValue={{
-                label: `Available to Stake: ${formatNumber(bond.availableToStake)}`,
-                onClick: () => setAmount(bond.availableToStake.toString()),
-              }}
             />
           </div>
         </div>
@@ -125,12 +100,8 @@ export const StakeNftModal = ({ bond, open, toggleOpen }: BondModalProps) => {
           <Button className='w-[136px]' variant='destructive' onClick={() => toggleOpen(false)}>
             Cancel
           </Button>
-          <Button
-            className='w-[136px]'
-            onClick={() => void stake()}
-            disabled={!amount || validationErrors}
-          >
-            Stake
+          <Button className='w-[136px]' onClick={() => void unstake()} disabled={!amount}>
+            Withdraw
           </Button>
         </DialogFooter>
       </DialogContent>
