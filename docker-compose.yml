@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  evidentia-dev:
-    container_name: evidentia-dev
-    image: evidentia-dev:latest
+  evidentia-xrpl-dev:
+    container_name: evidentia-xrpl-dev
+    image: evidentia-xrpl-dev:latest
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -11,4 +11,4 @@ services:
         NODE: development
     restart: always
     ports:
-      - 3000:3000
+      - 3001:3000
