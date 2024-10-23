@@ -54,17 +54,6 @@ export default function Admin() {
     <div className='flex w-full flex-col'>
       <header className='flex min-h-[60px] items-center justify-between bg-header pl-4 pr-[30px]'>
         <h2 className='text-left text-2xl font-semibold leading-7'>Admin Panel</h2>
-        {/* <ConnectButton
-          client={thirdwebClient}
-          wallets={[createWallet('io.metamask')] as Wallet[]}
-          onConnect={wallet => {
-            void (async () => {
-              await wallet.switchChain(
-                process.env['NEXT_PUBLIC_ENV'] === 'development' ? sepolia : mainnet,
-              );
-            })();
-          }}
-        /> */}
         <Connect />
       </header>
       <div className='flex flex-col items-center justify-center'>
