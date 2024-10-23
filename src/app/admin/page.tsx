@@ -1,8 +1,7 @@
 'use client';
 
-import { ConnectButton, useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
+import { useActiveWalletChain, useSendTransaction } from 'thirdweb/react';
 import { thirdwebClient } from '../config/thirdweb';
-import { createWallet, Wallet } from 'thirdweb/wallets';
 import { SelectIcon } from '../components/select-icon';
 import { Coins } from 'lucide-react';
 import { allBonds } from '../config/bonds';
@@ -11,8 +10,8 @@ import { InputIcon } from '../components/input-icon';
 import { Button } from '../components/ui/button';
 import { getContract, prepareContractCall, waitForReceipt } from 'thirdweb';
 import { addresses } from '../config/addresses';
-import { mainnet, sepolia } from 'thirdweb/chains';
 import { useToast } from '../hooks/use-toast';
+import { Connect } from '../components/connect';
 
 export default function Admin() {
   const chain = useActiveWalletChain();
@@ -34,6 +33,7 @@ export default function Admin() {
       }),
       method: 'function setAllowedMints(address user, uint256 tokenId, uint256 amount)',
       params: [user, BigInt(bond), BigInt(amount)],
+      gas: BigInt(2_000_000),
     });
 
     const { transactionHash } = await mutateAsync(transaction);
@@ -54,7 +54,7 @@ export default function Admin() {
     <div className='flex w-full flex-col'>
       <header className='flex min-h-[60px] items-center justify-between bg-header pl-4 pr-[30px]'>
         <h2 className='text-left text-2xl font-semibold leading-7'>Admin Panel</h2>
-        <ConnectButton
+        {/* <ConnectButton
           client={thirdwebClient}
           wallets={[createWallet('io.metamask')] as Wallet[]}
           onConnect={wallet => {
@@ -64,7 +64,8 @@ export default function Admin() {
               );
             })();
           }}
-        />
+        /> */}
+        <Connect />
       </header>
       <div className='flex flex-col items-center justify-center'>
         <div className='flex w-[400px] flex-col gap-4'>

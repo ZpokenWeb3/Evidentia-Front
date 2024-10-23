@@ -10,9 +10,6 @@ export const DashboardProvider = ({ children }: { children: React.ReactNode }) =
   const chain = useActiveWalletChain();
   const account = useActiveAccount();
   const { fetchData, fetchUserStats, fetchStake, fetchERC20 } = useStore(userSelector);
-  console.log({ account, chain });
-  //walletToken-d624f86486afd460eb70e499644a356f
-  //walletToken-d624f86486afd460eb70e499644a356f
 
   useEffect(() => {
     if (!chain || !account) return;

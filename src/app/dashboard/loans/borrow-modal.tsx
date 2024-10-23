@@ -46,6 +46,7 @@ export const BorrowModal = ({
       }),
       method: 'function borrow(uint256 amount)',
       params: [parseUnits(amount, 6).toBigInt()],
+      gas: BigInt(2_000_000),
     });
 
     const { transactionHash } = await mutateAsync(tx);

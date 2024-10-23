@@ -7,7 +7,6 @@ export const SBC: ERC20 = {
   decimals: 6,
   address: {
     1440002: addresses[1440002]?.STABLE_BOND_COINS ?? '',
-    11155111: addresses[11155111]?.STABLE_BOND_COINS ?? '',
   },
 };
 

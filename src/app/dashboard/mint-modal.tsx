@@ -29,6 +29,7 @@ export const MintModal = ({ bond, open, toggleOpen }: BondModalProps) => {
       }),
       method: 'function mint(uint256 tokenId, uint256 amount, bytes data)',
       params: [BigInt(bond.tokenId), bond.availableToMint, '0x'],
+      gas: BigInt(2_000_000),
     });
 
     const { transactionHash } = await mutateAsync(tx);

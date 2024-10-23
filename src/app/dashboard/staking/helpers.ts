@@ -4,8 +4,7 @@ import BigNumber from 'bignumber.js';
 import { Chain, readContract } from 'thirdweb';
 
 export const calculateAPY = (expectedAPY: bigint) => {
-  console.log({ expectedAPY });
-
+  if (expectedAPY > BigInt(1000)) return BigNumber(10);
   return BigNumber(expectedAPY.toString()).div(BigNumber(100));
 };
 
@@ -29,6 +28,7 @@ export const calculateNextRewardYield = async (chain: Chain, decimals: number) =
       contract: stakinContract,
       method: 'totalStaked',
     });
+
     const totalStakedFormatted = fromBaseUnitAmount(totalStaked, decimals);
 
     const rewardAmount = await readContract({
@@ -41,7 +41,6 @@ export const calculateNextRewardYield = async (chain: Chain, decimals: number) =
     return rewardAmountFormatted.div(totalStakedFormatted).multipliedBy(BigNumber(100));
   } catch (error) {
     console.log('calculateNextRewardYield', error);
-
     return BigNumber(0);
   }
 };

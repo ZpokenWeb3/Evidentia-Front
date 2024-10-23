@@ -65,6 +65,7 @@ export const RepayModal = ({ open, toggleOpen }: RepayModalProps) => {
       }),
       method: 'function repay(uint256 amount)',
       params: [value],
+      gas: BigInt(2_000_000),
     });
 
     const { transactionHash } = await mutateAsync(repayTx);

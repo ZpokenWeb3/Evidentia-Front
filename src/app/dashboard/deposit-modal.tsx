@@ -60,6 +60,7 @@ export const DepositModal = ({ bond, open, toggleOpen }: BondModalProps) => {
       }),
       method: 'function stakeNFT(address nftAddress, uint256 tokenId, uint256 amount)',
       params: [BOND_NFT, BigInt(bond.tokenId), BigInt(amount)],
+      gas: BigInt(2_000_000),
     });
 
     const { transactionHash } = await mutateAsync(stakeTx);

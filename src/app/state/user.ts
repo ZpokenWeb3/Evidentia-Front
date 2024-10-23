@@ -16,10 +16,6 @@ import { UserERC20 } from '../types/erc20';
 
 const ZERO_BIG_INT = BigInt(0);
 
-const acc = '0x727D5f06F63A0645FBd51f414182c195Bb13b46B';
-
-const debbug = false;
-
 export interface UserSlice {
   userBonds: UserBond[];
   fetchData: (account: string, chain: Chain) => Promise<void>;
@@ -65,7 +61,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
             const allowedToMints = await readContract({
               contract: nftContract,
               method: 'allowedMints',
-              params: [debbug ? acc : account, BigInt(i.tokenId)],
+              params: [account, BigInt(i.tokenId)],
             });
 
             if (!allowedToMints) return null;
@@ -75,34 +71,25 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
             const staked = await readContract({
               contract: stakingAndBorrowingContract,
               method: 'userNFTs',
-              params: [debbug ? acc : account, addresses[chain.id]!.BOND_NFT, BigInt(i.tokenId)],
+              params: [account, addresses[chain.id]!.BOND_NFT, BigInt(i.tokenId)],
             });
 
             const availableToMint = await readContract({
               contract: nftContract,
               method: 'remainingMints',
-              params: [debbug ? acc : account, BigInt(i.tokenId)],
+              params: [account, BigInt(i.tokenId)],
             });
 
             const minted = await readContract({
               contract: nftContract,
               method: 'mintedPerUser',
-              params: [debbug ? acc : account, BigInt(i.tokenId)],
+              params: [account, BigInt(i.tokenId)],
             });
 
             const availableToDeposit = await readContract({
               contract: nftContract,
               method: 'balanceOf',
-              params: [debbug ? acc : account, BigInt(i.tokenId)],
-            });
-
-            console.log({
-              ...i,
-              allowedToMints,
-              availableToMint,
-              staked,
-              minted,
-              availableToDeposit,
+              params: [account, BigInt(i.tokenId)],
             });
 
             return {
@@ -126,23 +113,27 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
       }
     },
     fetchUserStats: async (account, chain) => {
-      const stakingAndBorrowingContract = getStakingAndBorrowingContract(chain);
+      try {
+        const stakingAndBorrowingContract = getStakingAndBorrowingContract(chain);
 
-      const userStats = await readContract({
-        contract: stakingAndBorrowingContract,
-        method: 'getUserStats',
-        params: [debbug ? acc : account],
-      });
+        const userStats = await readContract({
+          contract: stakingAndBorrowingContract,
+          method: 'getUserStats',
+          params: [account],
+        });
 
-      const availableToBorrow = await readContract({
-        contract: stakingAndBorrowingContract,
-        method: 'userAvailableToBorrow',
-        params: [debbug ? acc : account],
-      });
+        const availableToBorrow = await readContract({
+          contract: stakingAndBorrowingContract,
+          method: 'userAvailableToBorrow',
+          params: [account],
+        });
 
-      set(state => {
-        state.user.userStats = { ...userStats, availableToBorrow };
-      });
+        set(state => {
+          state.user.userStats = { ...userStats, availableToBorrow };
+        });
+      } catch (error) {
+        console.log('fetchUserStats', error);
+      }
     },
     fetchStake: async (account, chain) => {
       const stableCoinsStakingContract = getStableCoinsStaking(chain);
@@ -150,7 +141,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
       const stakers = await readContract({
         contract: stableCoinsStakingContract,
         method: 'stakers',
-        params: [debbug ? acc : account],
+        params: [account],
       });
 
       let expectedAPY = ZERO_BIG_INT;
@@ -159,7 +150,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
         expectedAPY = await readContract({
           contract: stableCoinsStakingContract,
           method: 'expectedAPY',
-          params: [debbug ? acc : account],
+          params: [account],
         });
       } catch (error) {
         console.log({ error });
@@ -191,7 +182,7 @@ export const createUserSlice = (): SliceCreator<UserSlice> => set => {
           const balance = await readContract({
             contract,
             method: 'balanceOf',
-            params: [debbug ? acc : account],
+            params: [account],
           });
 
           return { ...i, balance };

@@ -1,10 +1,10 @@
 import { Chain, getContract } from 'thirdweb';
-import { BondNFTAbi } from '../abi/BondNFT';
 import { NFTStakingAndBorrowingAbi } from '../abi/NFTStakingAndBorrowing';
 import { StableBondCoinsAbi } from '../abi/StableBondCoins';
 import { StableCoinsStakingAbi } from '../abi/StableCoinsStaking';
 import { addresses } from '../config/addresses';
 import { thirdwebClient } from '../config/thirdweb';
+import { BondNFTAbi } from '../abi/BondNFT';
 
 export const getNftContract = (chain: Chain) => {
   return getContract({
