@@ -16,7 +16,7 @@ export const Loader = () => {
         <stop offset='1' stopColor='#232C56' stopOpacity='0'></stop>
       </radialGradient>
       <circle
-        transformOrigin='center'
+        transform-origin='center'
         fill='none'
         stroke='url(#a1)'
         strokeWidth='15'
@@ -39,7 +39,7 @@ export const Loader = () => {
         ></animateTransform>
       </circle>
       <circle
-        transformOrigin='center'
+         transform-origin='center'
         fill='none'
         opacity='.2'
         stroke='#232C56'
